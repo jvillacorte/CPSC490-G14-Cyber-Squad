@@ -1,23 +1,20 @@
-# CPSC 490 — Group 〈N〉 〈Group Name〉
+# CPSC 490 — Group 14 Cyber Squad
 
-> **Copy this file to `README.md` in YOUR repository and fill it in.**
-> (In this example repository the root `README.md` is the setup guide, so the
-> team README model lives here.)
-
-**Project title:** 〈Title〉
-**Sponsor:** 〈RTX-3 / EL-1 / SNX-2 / independent〉
-**Section:** 〈01 (Tue) | 05 (Thu)〉
+**Project title:** AI Assisted Security Operations Platform
+**Sponsor:** Independent
+**Section:** 05 (Thu)
 
 ## Team
 
 | Name | GitHub | Role | Leader |
 |---|---|---|---|
-| 〈Last, First〉 | @〈username〉 | 〈e.g. backend, docs lead〉 | ✅ |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
+| Villacorte, Joseph | @jvillacorte | docs lead | ✅ |
+| Boynton, Daniel | @danjobo | Backend Lead | |
+| Vanna Nguyen | @NguyenVGH | Frontend Lead | |
+| Alex Goodson | @alexgoodson-1991 | Security & Testing Lead | |
+| Jake Nellesen | @Jake-P-N | DevOps | |
 
-**Contact person:** 〈Name〉 — 〈email〉
+**Contact person:** Joseph Villacorte — josephvillacorte@gmail.com
 
 ## Links
 
@@ -29,8 +26,7 @@
 
 ## Project summary
 
-〈3–5 sentences a stranger can understand: the problem, your approach, what
-will exist at the end of the semester.〉
+Cybersecurity platform designed to help users identify, analyze and respond to flagged security threats. The project will make usage of a large language model (LLM), such as ChatGPT, Claude, or Copilot to assist with the analysis of security data. The platform will include a backend that is responsible for processing security information (where the LLM will be utilized), providing formatted results to the users. By the end of the semester, the team aims to deliver a functioning prototype, that will demonstrate how AI can assist with basic cybersecurity operations, while keeping the human element in essential decisions.
 
 ## How we work
 
