@@ -1,23 +1,20 @@
-# CPSC 490 — Group 〈N〉 〈Group Name〉
+# CPSC 490 — Group 14 Cyber Squad
 
-> **Copy this file to `README.md` in YOUR repository and fill it in.**
-> (In this example repository the root `README.md` is the setup guide, so the
-> team README model lives here.)
-
-**Project title:** 〈Title〉
-**Sponsor:** 〈RTX-3 / EL-1 / SNX-2 / independent〉
-**Section:** 〈01 (Tue) | 05 (Thu)〉
+**Project title:**  AU Assisted Security Operations Platform
+**Sponsor:** independent
+**Section:** 05 (Thu)
 
 ## Team
 
 | Name | GitHub | Role | Leader |
 |---|---|---|---|
-| 〈Last, First〉 | @〈username〉 | 〈e.g. backend, docs lead〉 | ✅ |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
-| 〈…〉 | @〈…〉 | 〈…〉 | |
+| Villacorte, Joseph | @jvillacorte | docs lead | ✅ |
+| Boynton, Daniel | @danjobo | Backend Lead | |
+| Vanna Nguyen | @NguyenVGH | Frontend Lead | |
+| Alex Goodson | @alexgoodson-1991 | Security & Testing Lead | |
+| Jake Nellesen | @Jake-P-N | DevOps | |
 
-**Contact person:** 〈Name〉 — 〈email〉
+**Contact person:** Joseph Villacorte — josephvillacorte@gmail.com
 
 ## Links
 
