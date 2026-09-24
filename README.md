@@ -1,8 +1,4 @@
-# CPSC 490 — Group 〈N〉 〈Group Name〉
-
-> **Copy this file to `README.md` in YOUR repository and fill it in.**
-> (In this example repository the root `README.md` is the setup guide, so the
-> team README model lives here.)
+# CPSC 490 — Group 14 Cyber Squad
 
 **Project title:** 〈Title〉
 **Sponsor:** 〈RTX-3 / EL-1 / SNX-2 / independent〉
