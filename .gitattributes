@@ -1,0 +1,9 @@
+# Course-only reference pages: excluded from the scaffold copy.
+# The QUICKSTART copy recipe uses `git archive`, which honors export-ignore,
+# so team repos never receive these files (and their gates never see them).
+# docs/sponsored-projects.md previously broke team CI via a dangling relative
+# link (gate G4); docs/repo-readiness.md is the all-teams status page and is
+# rewritten by the instructor's daily sweep.
+docs/repo-readiness.md export-ignore
+docs/sponsored-projects.md export-ignore
+docs/sprint-schedule.md export-ignore

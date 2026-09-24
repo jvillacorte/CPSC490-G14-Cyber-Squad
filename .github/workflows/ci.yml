@@ -1,0 +1,137 @@
+# CPSC 490 — CI gate (the automated half of the harness).
+#
+# Runs on every pull request into a Gitflow integration branch (develop,
+# release/*, hotfix/*, main) and on every push to develop or main. A red run
+# blocks the merge (see branch protection in docs/git-workflow.md), so this
+# is the checkpoint that catches AI output nobody verified.
+#
+# Jobs:
+#   harness       — the repository gates (.github/scripts/check_repo.py)
+#   prototype     — builds/tests prototype/ if it has anything to build
+#   pr-discipline — the PR itself links an issue and discloses AI use
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop, "release/**", "hotfix/**"]
+    # `edited` matters: pr-discipline reads the PR BODY from the event
+    # payload. Without it, a PR opened without `Closes #12` stays red
+    # forever — adding the line in the web UI fires no event, and a
+    # re-run replays the ORIGINAL payload with the old body. Found
+    # 2026-09-18 on four student repos.
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  harness:
+    name: Repository harness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run gates
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python .github/scripts/check_repo.py
+
+  prototype:
+    name: Prototype build & tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Node prototypes -------------------------------------------------
+      - name: Detect Node project
+        id: node
+        run: |
+          if [ -f prototype/package.json ]; then echo "found=true" >> "$GITHUB_OUTPUT";
+          else echo "found=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-node@v4
+        if: steps.node.outputs.found == 'true'
+        with:
+          node-version: "20"
+      - name: Install and test (Node)
+        if: steps.node.outputs.found == 'true'
+        working-directory: prototype
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          # only run the script if it exists, so a prototype without tests
+          # still reports honestly instead of failing for the wrong reason
+          # --if-present exits 0 when there is no test script, so check for it
+          # explicitly rather than parsing 'npm run' output.
+          if node -e "process.exit(require('./package.json').scripts?.test?0:1)"; then
+            npm test
+          else
+            echo "::warning::prototype/package.json has no test script — add one before Sprint 2"
+          fi
+
+      # --- Python prototypes -----------------------------------------------
+      - name: Detect Python project
+        id: py
+        run: |
+          if [ -f prototype/requirements.txt ] || [ -f prototype/pyproject.toml ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"; else echo "found=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.py.outputs.found == 'true'
+        with:
+          python-version: "3.12"
+      - name: Install and test (Python)
+        if: steps.py.outputs.found == 'true'
+        working-directory: prototype
+        run: |
+          python -m pip install --upgrade pip
+          [ -f requirements.txt ] && pip install -r requirements.txt || true
+          [ -f pyproject.toml ] && pip install -e . || true
+          pip install pytest
+          # Ask pytest, do not guess with a glob: exit code 5 means "no tests
+          # collected", anything else non-zero is a real failure. A glob-based
+          # check silently skipped the tests and reported success.
+          set +e; python -m pytest -q; rc=$?; set -e
+          if [ "$rc" -eq 5 ]; then
+            echo "::warning::no Python tests found in prototype/ — add one before Sprint 2"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
+
+      - name: Nothing to build
+        if: steps.node.outputs.found == 'false' && steps.py.outputs.found == 'false'
+        run: echo "::notice::prototype/ has no Node or Python project yet (expected before Sep 27)."
+
+  pr-discipline:
+    name: PR links an issue and discloses AI use
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR body
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -e
+          fail=0
+          printf '%s' "$BODY" > /tmp/body.txt
+          if ! grep -qiE '(clos(e|es|ed)|fix(e|es|ed)?|resolv(e|es|ed))[[:space:]]+#[0-9]+' /tmp/body.txt; then
+            echo "::error::PR body must link its story, e.g. 'Closes #12'."; fail=1
+          fi
+          # Accept the section however it is written: "## AI use", "**AI use**",
+          # "- AI use:", "AI usage". The earlier pattern rejected the heading
+          # form the PR template itself uses.
+          if ! grep -qiE '^[[:space:]]*[#>*-]{0,4}[[:space:]]*\**[[:space:]]*AI[[:space:]]+(use|usage)' /tmp/body.txt; then
+            echo "::error::PR body must keep the 'AI use' section from the PR template and fill it in."; fail=1
+          fi
+          if grep -qE '<!--|〈|your answer here' /tmp/body.txt; then
+            echo "::error::PR body still contains template comments/placeholders — fill them in."; fail=1
+          fi
+          if ! grep -qiE 'verif|tested|ran |checked' /tmp/body.txt; then
+            echo "::error::PR body must say what you verified and how (the evidence line)."; fail=1
+          fi
+          exit $fail

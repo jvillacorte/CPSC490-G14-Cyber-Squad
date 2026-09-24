@@ -1,21 +1,70 @@
-MIT License
+CPSC 490 course scaffold — Copyright and Terms of Use
+=====================================================
 
-Copyright (c) 2026 The Cyber Squad
+Copyright (c) 2026 Kyoung Shin. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Kyoung Shin
+Department of Computer Science
+California State University, Fullerton
+kshin@fullerton.edu
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Everything in this repository — the AIDLC curriculum and lecture series, the
+guides, the templates, the harness and its gates, the setup scripts, the
+worked examples, and the proposal scaffold — is the original course work of
+Kyoung Shin, created for CPSC 490 Undergraduate Seminar in Computer Science.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+ALL RIGHTS RESERVED. No licence is granted by publication. Making this
+repository publicly readable is for the convenience of enrolled students and
+for colleagues evaluating the approach; it does not place the work in the
+public domain and does not grant permission to reuse it.
+
+
+PERMITTED WITHOUT ASKING
+
+  1. Students currently enrolled in CPSC 490 or CPSC 491 with the author may
+     copy, run, modify and build upon this material as required for their
+     coursework, including copying the scaffold into their own team
+     repository. This permission is for coursework only and does not extend
+     to publication or redistribution outside the course.
+
+  2. Anyone may read this repository, and may quote brief excerpts with
+     attribution for the purposes of review, commentary, or scholarly
+     citation.
+
+
+REQUIRES WRITTEN PERMISSION — please ask first
+
+  Any other use, including but not limited to:
+
+  - adopting or adapting these materials for another course, workshop,
+    seminar, or training programme (whether or not money changes hands);
+  - redistributing, republishing, or mirroring any part of this repository;
+  - including any part of it in a product, service, publication, textbook,
+    or commercial training offering;
+  - using it to train or fine-tune machine-learning models.
+
+  Write to kshin@fullerton.edu. Requests from fellow instructors are welcome
+  and normally granted — the author simply wishes to know who is using the
+  material and to keep the record of authorship straight.
+
+
+CITATION
+
+  When permission has been granted, cite as:
+
+      Shin, K. (2026). CPSC 490 AIDLC course scaffold: human-in-the-loop
+      AI-driven development for undergraduate capstone projects.
+      Department of Computer Science, California State University,
+      Fullerton. Used with permission.
+
+
+NO WARRANTY
+
+  This material is provided "as is", without warranty of any kind, express
+  or implied. The author is not liable for any claim, damages, or other
+  liability arising from its use.
+
+
+Third-party content: the research appendix (docs/aidlc/evidence.md) cites
+external work under normal academic citation practice; those sources remain
+the property of their respective authors.

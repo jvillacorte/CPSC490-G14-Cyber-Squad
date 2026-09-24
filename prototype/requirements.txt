@@ -1,0 +1,2 @@
+# Prototype dependencies. Empty for v0 (standard library only).
+# Add one line per package you actually need, pinned:  requests==2.32.3

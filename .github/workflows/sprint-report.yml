@@ -1,0 +1,59 @@
+# Sprint story-point report — committed vs completed per sprint.
+#
+# Runs on the last day of each sprint (and any time you press the button in
+# the Actions tab). It writes the table into the run summary so you can read
+# it without cloning anything, and posts it as a comment on the sprint's
+# milestone tracking issue if you have one open with the `sprint-report`
+# label.
+#
+# Uses only the automatic GITHUB_TOKEN: the report reads `sp: N` labels and
+# `Sprint N` milestones through the REST API, not the project board, so no
+# extra permission is needed.
+name: Sprint report
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 16:00 UTC (9am Pacific) every Sunday — sprint boundaries land on a
+    # Sunday, and a weekly read is useful mid-sprint too.
+    - cron: "0 16 * * 0"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    name: Story points committed vs completed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate the report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python scripts/sprint_report.py --markdown > sprint-report.md
+          cat sprint-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sprint-report
+          path: sprint-report.md
+
+      - name: Comment on the tracking issue, if there is one
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          N=$(gh issue list --label sprint-report --state open --limit 1 \
+                --json number -q '.[0].number' 2>/dev/null || true)
+          if [ -n "$N" ]; then
+            gh issue comment "$N" --body-file sprint-report.md
+            echo "::notice::posted the report to issue #$N"
+          else
+            echo "::notice::no open issue labelled 'sprint-report' — the report is in this run's summary and artifact. Create one to get it as a comment each week."
+          fi
