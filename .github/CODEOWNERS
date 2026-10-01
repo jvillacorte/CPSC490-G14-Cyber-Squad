@@ -1,0 +1,15 @@
+# Default: team leader reviews everything not matched below
+*                    @jvillacorte
+
+# Docs and proposal
+/docs/               @jvillacorte
+/proposal/           @jvillacorte
+*.md                 @jvillacorte
+
+# DevOps
+/scripts/            @Jake-P-N
+/.github/workflows/  @Jake-P-N
+
+# Security & Testing: repo harness and review routing
+/.github/scripts/    @alexgoodson-1991 @Jake-P-N
+/.github/CODEOWNERS  @alexgoodson-1991 @jvillacorte
