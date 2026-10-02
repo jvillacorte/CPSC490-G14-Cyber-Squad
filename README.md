@@ -1,6 +1,6 @@
 # CPSC 490 — Group 14 Cyber Squad
 
-**Project title:** AI Assisted Security Operations Platform
+**Project title:** Rogue-Lite Cyber Sandbox
 **Sponsor:** Independent
 **Section:** 05 (Thu)
 
@@ -19,14 +19,14 @@
 ## Links
 
 - **Proposal:** [`proposal/proposal.md`](proposal/proposal.md)
-- **Project board:** 〈paste your Projects board URL〉
+- **Project board:** https://github.com/users/jvillacorte/projects/1/views/1
 - **Specifications:** [`docs/specs/`](docs/specs/) · **Designs:** [`docs/design/`](docs/design/)
 - **Prototype:** [`prototype/`](prototype/) — run instructions in its README
 - **Sprint reviews:** [`docs/sprint-reviews/`](docs/sprint-reviews/)
 
 ## Project summary
 
-Cybersecurity platform designed to help users identify, analyze and respond to flagged security threats. The project will make usage of a large language model (LLM), such as ChatGPT, Claude, or Copilot to assist with the analysis of security data. The platform will include a backend that is responsible for processing security information (where the LLM will be utilized), providing formatted results to the users. By the end of the semester, the team aims to deliver a functioning prototype, that will demonstrate how AI can assist with basic cybersecurity operations, while keeping the human element in essential decisions.
+AI-assisted cybersecurity training environment that simulates malware incidents within a customizable, desktop-type virtual machine. Users will be able to investigate simulated files, processes, logs, and network activity, then being able to practice deleting, containing, recovering from, and preventing threats without affecting the host environment or operating system. Tentatively, the project stack will consist of Python and PySide6 for the creation of the application, the usage of Pydantic in order to validate AI-generated scenario data, and a local/hosted LLM such as NRP, which can provide variability through dynamic scenarios, hints and educational background information.
 
 ## How we work
 
