@@ -47,27 +47,28 @@ P2- Limited Scenario Variation and ability for Repeated Learning Opportunities: 
 
 ## 2. Goals and Objectives
 
-- **Goal 1: Develop an interactive and secure cybersecurity training environment**
-  - Objective 1.1: Create a simulated desktop interface that contains a file explorer, process manager, system log viewer, and network activity viewer.
-  - Objective 1.2: Implement a virtual file system that allows users to inspect, create, and delete simulated files.
-  - Objective 1.3: Create a process manager for the desktop environment that allows users to inspect and terminate running simulated programs and processes.
-  - Objective 1.4: Develop a system log viewer that displays timestamped events associated with the simulated system, including malware activity.
-  - Objective 1.5: Develop a network activity viewer that displays simulated connections, including source and destination addresses, ports, and connection status.
-  - Objective 1.6: Implement at least two simulated malware behaviors that modify simulated files, processes, and network activity while restricting their effects to the internal application.
-  - Objective 1.7: Verify through separate test cases that each simulated malware behavior does not modify host-system files, processes, or network configurations.
-  - Objective 1.8: Implement incident-response controls that allow users to identify, contain, remove, and recover from simulated malware threats.
-  - Objective 1.9: Implement scenario controls that allow users to start, complete, restart, and reset training scenarios.
+- **Goal 1: Develop an interactive and secure cybersecurity training environment** (Epic #22)
+  - Objective 1.1: Create a simulated desktop interface that contains a file explorer, process manager, system log viewer, and network activity viewer. (#24)
+  - Objective 1.2: Implement a virtual file system that allows users to inspect, create, and delete simulated files. (#25)
+  - Objective 1.3: Create a process manager for the desktop environment that allows users to inspect and terminate running simulated programs and processes. (#26)
+  - Objective 1.4: Develop a system log viewer that displays timestamped events associated with the simulated system, including malware activity. (#27)
+  - Objective 1.5: Develop a network activity viewer that displays simulated connections, including source and destination addresses, ports, and connection status. (#28)
+  - Objective 1.6: Implement at least two simulated malware behaviors that modify simulated files, processes, and network activity while restricting their effects to the internal application. (#29)
+  - Objective 1.7: Verify through separate test cases that each simulated malware behavior does not modify host-system files, processes, or network configurations. (#30)
+  - Objective 1.8: Implement incident-response controls that allow users to identify, contain, remove, and recover from simulated malware threats. (#31)
+  - Objective 1.9: Implement scenario controls that allow users to start, complete, restart, and reset training scenarios. (#32)
 
-- **Goal 2: Integrate AI-assisted mechanics through scenario generation and custom-generated feedback**
-  - Objective 2.1: Develop a scenario configuration interface that allows users to select malware type, difficulty level (easy, medium, or hard), and attack path.
-  - Objective 2.2: Define a structured scenario schema containing simulated files, processes, logs, network activity, and incident-response objectives.
-  - Objective 2.3: Integrate an LLM through [NRP.ai](https://nrp.ai) to generate structured cybersecurity scenarios based on user-selected parameters.
-  - Objective 2.4: Implement Pydantic validation that accepts scenarios meeting predefined requirements and rejects scenarios containing invalid or unsupported data.
-  - Objective 2.5: Implement a scenario loader that converts validated AI-generated data into interactive elements within the simulated desktop environment.
-  - Objective 2.6: Develop an action-logging system that records user investigation and incident-response actions in chronological order.
-  - Objective 2.7: Generate an AI-assisted after-action report that summarizes the simulated attack information, evaluates user actions, and recommends alternative incident-response procedures.
-  - Objective 2.8: Implement an optional AI-assisted hint system that provides contextual information during an active training scenario.
-  - Objective 2.9: Generate at least three distinct and structurally valid scenarios using identical input parameters to demonstrate scenario variability, and test three additional scenarios using different input parameters.
+- **Goal 2: Integrate AI-assisted mechanics through scenario generation and custom-generated feedback** (Epic #23)
+  - Objective 2.1: Develop a scenario configuration interface that allows users to select malware type, difficulty level (easy, medium, or hard), and attack path. (#33)
+  - Objective 2.2: Define a structured scenario schema containing simulated files, processes, logs, network activity, and incident-response objectives. (#34)
+  - Objective 2.3: Integrate an LLM through [NRP.ai](https://nrp.ai) to generate structured cybersecurity scenarios based on user-selected parameters. (#35)
+  - Objective 2.4: Implement Pydantic validation that accepts scenarios meeting predefined requirements and rejects scenarios containing invalid or unsupported data. (#36)
+  - Objective 2.5: Implement a scenario loader that converts validated AI-generated data into interactive elements within the simulated desktop environment. (#37)
+  - Objective 2.6: Develop an action-logging system that records user investigation and incident-response actions in chronological order. (#38)
+  - Objective 2.7: Generate an AI-assisted after-action report that summarizes the simulated attack information, evaluates user actions, and recommends alternative incident-response procedures. (#39)
+  - Objective 2.8: Implement an optional AI-assisted hint system that provides contextual information during an active training scenario. (#40)
+  - Objective 2.9: Generate at least three distinct and structurally valid scenarios using identical input parameters to demonstrate scenario variability, and test three additional scenarios using different input parameters. (#41)
+
 
 
 ## 3. Proposed Approaches
