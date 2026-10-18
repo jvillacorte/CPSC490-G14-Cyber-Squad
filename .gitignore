@@ -29,3 +29,7 @@ build/
 # Converted submissions (keep the Markdown source of truth in git;
 # commit a .docx deliberately if your team writes in Word)
 proposal/*.docx
+# …except the course's own: the Word template pandoc lays the proposal into,
+# and the worked example's output
+!proposal/reference.docx
+!proposal/example-proposal.docx

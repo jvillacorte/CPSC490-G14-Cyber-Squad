@@ -141,7 +141,9 @@ def collect(only: int | None, trace_scope: bool) -> list[dict]:
         # Hierarchy is read BOTH ways teams express it: `- [ ] #12` task
         # lists and GitHub's native sub-issues.
         rolled_up = set()
+        listed = set()       # named in ANY issue's task list = has a parent
         for x in issues:
+            listed |= task_children(x.get("body"))
             if points(x) > 0:
                 rolled_up |= task_children(x.get("body"))
                 rolled_up |= sub_issue_children(x["number"])
@@ -149,7 +151,7 @@ def collect(only: int | None, trace_scope: bool) -> list[dict]:
         r = {"sprint": num, "title": ms["title"], "start": start, "end": end,
              "committed": 0, "completed": 0, "late": 0, "carried": 0,
              "added_mid": 0, "unpointed": 0, "n": len(issues), "epics": 0,
-             "double_pointed": 0}
+             "double_pointed": 0, "unpointed_writing": 0}
         for x in issues:
             names = [l["name"] for l in x.get("labels", [])]
             if "epic" in names:          # epics span sprints; not capacity
@@ -157,12 +159,18 @@ def collect(only: int | None, trace_scope: bool) -> list[dict]:
                 continue
             p = points(x)
             if p == 0:
-                # Only an objective is meant to carry points. A feature, task
-                # or sub-task without an `sp:` label is correct, not missing -
-                # its parent objective holds the estimate - so saying otherwise
-                # would scold every team that followed the rule.
+                # An objective carries points, and so does a writing task that
+                # stands on its own (a proposal section - Sprint 1 is mostly
+                # these, and nothing above them holds the estimate). A feature,
+                # task or sub-task UNDER an objective without an `sp:` label is
+                # correct, not missing - its parent holds the estimate - so
+                # saying otherwise would scold every team that followed the rule.
                 if "user-story" in names:
                     r["unpointed"] += 1
+                elif ("task" in names and "documentation" in names
+                      and x["number"] not in listed
+                      and not x.get("parent_issue_url")):   # native sub-issue
+                    r["unpointed_writing"] += 1
                 continue
             if x["number"] in rolled_up:
                 r["double_pointed"] += p     # its parent already carries these
@@ -204,9 +212,16 @@ def advise(rows: list[dict]) -> list[str]:
     if unpointed:
         quality.append(f"{unpointed} user story/stories carry no `sp:` label, so "
                        "they are invisible to this report. Point every objective "
-                       "at planning time. (Features, tasks and sub-tasks are "
-                       "*meant* to be unpointed - their objective holds the "
-                       "estimate.)")
+                       "at planning time. (Features, tasks and sub-tasks under "
+                       "an objective are *meant* to be unpointed - their "
+                       "objective holds the estimate.)")
+    writing = sum(r["unpointed_writing"] for r in rows)
+    if writing:
+        quality.append(f"{writing} writing task(s) (`task` + `documentation`, with "
+                       "no parent) carry no `sp:` label. Proposal writing is real "
+                       "sprint work and nothing else holds its estimate, so point "
+                       "each one (First Steps guide, Step 3.2). If one actually sits under an "
+                       "objective, link it there instead and leave it unpointed.")
 
     done = [r for r in rows if r["end"] and r["end"] < datetime.now(timezone.utc)
             and (r["committed"] + r["added_mid"]) > 0]
