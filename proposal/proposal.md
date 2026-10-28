@@ -107,8 +107,11 @@ Figure references in this section correspond to design artifacts in `docs/design
 - **Figure 2. System context diagram** — `docs/design/system-context.md`  
   Defines system boundaries and external actors/services, including users and LLM/API dependencies.
 
-- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`  
-  Shows parameter input through generation, validation, loading, user interaction logging, and after-action reporting.
+- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`
+  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and persistent logging/reporting outputs.
+
+  ![Figure 3: System Data Flow Diagram](../docs/design/images/data-flow-diagram.png)
+  *Figure 3: System Data Flow Diagram modeling parameter input through generation, validation, desktop loading, chronological action logging, and after-action reporting.*
 
 - **Figure 4. ER diagram for scenario schema and action logs** — `docs/design/data-model.md`  
   Models structured scenario entities and action-history relationships.
