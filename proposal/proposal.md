@@ -73,87 +73,77 @@ P2- Limited Scenario Variation and ability for Repeated Learning Opportunities: 
 
 ## 3. Proposed Approaches
 
-> Describe your proposed approach to solve the problem, specifying how you
-> will achieve the stated goals. List some possible strategies.
+Our project uses a **safe, in-memory cybersecurity simulation** to train beginner incident-response skills.  
+Instead of interacting with host operating-system resources, the application models files, processes, system logs, and network activity entirely inside application state. This keeps training repeatable and prevents accidental harm to the user’s machine while still allowing realistic investigation and response workflows.
 
-〈Your approach — **clear and concise**. State the strategy you chose, the
-alternatives you considered, and the reasoning that decided between them.
-Think of this as the argument, not the manual: a reader should finish this
-section understanding *what* you will do and *why that* rather than the
-alternatives.〉
+For scenario generation, we will combine **user-selected parameters** (malware type, difficulty, attack path) with an LLM integration to produce structured scenario data. Because LLM output can be inconsistent, generated scenarios are treated strictly as data and must pass schema validation before they can be loaded into the training environment. This design reduces unsafe or malformed outputs while preserving scenario variability.
 
-**Keep the details out of this section.** Tooling, platforms, frameworks,
-DBMS choices, environment setup, diagrams, and the work breakdown all belong
-in §4 (Required Environment, Resources, and Planned Activities). If a
-sentence here names a version number, a library, or a configuration, it
-probably belongs in §4 — leave a pointer instead ("the implementation stack
-is detailed in §4").
-
-〈A few paragraphs, or a short list of candidate strategies with one line of
-trade-off each. If it runs past a page, you are writing §4.〉
+We selected this approach over static handcrafted scenarios because it supports repeated practice with varied incidents and stronger learning transfer. We also selected this approach over host-level sandbox execution because Sprint 2 priorities are specification, design clarity, and a reliable prototype skeleton, not high-risk runtime behavior. Detailed implementation choices, environment/tooling, and diagram artifacts are documented in §4.
 
 ## 4. Required Environment, Resources, and Planned Activities
 
-> Review the required and available resources and environment to complete
-> your project. For example, server, platform, software tools, operating
-> systems, DBMS, or any required skills.
->
-> Describe the expected activities to achieve the stated goals, e.g.,
-> software development process.
+### Environment and resources
 
-〈Your environment, resources, and planned activities.〉
+| Category | Choice | Why this choice supports our approach |
+|---|---|---|
+| Language | Python | Aligns with team familiarity and supports rapid prototyping for simulation logic and AI integration. |
+| Desktop framework | PySide6 | Provides a practical GUI path for a simulated desktop interface (file/process/log/network views) with lower setup overhead than a game engine. |
+| Validation | Pydantic | Enforces structured scenario schemas and reject-invalid-before-load behavior required by Goal 2. |
+| AI integration | NRP.ai-backed LLM endpoint | Supports parameterized scenario generation and AI-assisted feedback workflows in Goal 2. |
+| Platform | Local desktop development environment | Simplifies Sprint 2 prototype wiring and demo execution from a clean clone. |
+| Data/state model | In-memory simulation state for Sprint 2 | Enforces host isolation and safe behavior while preserving realistic training interactions. |
+| Secrets/config | `.env`-based configuration (`.env.example` committed, no real secrets) | Enables reproducible setup without exposing credentials. |
+| Dev quality/tooling | GitHub Issues/PR workflow + CI + sprint-report | Preserves traceability from issue -> PR -> merged evidence and supports sprint scoring workflows. |
 
-**Diagrams belong in this section.** Include at minimum a high-level
-architecture diagram and a system (context) diagram; add the ER/EER model and
-a data-flow diagram where they help the reader understand what you are
-building and what it depends on. Draw them with any graphical tool
-(Lucidchart, draw.io, Miro, Mermaid, ERDPlus, Figma), keep the authoritative
-copies in `docs/design/` with both editable source and exported image, and
-reference them here.
+### Diagrams
 
-〈Number every figure, caption it, and point at it from the prose — "Figure 1
-shows the three deployment tiers and the trust boundary between them." A
-figure the text never mentions is decoration. See `docs/design/DIAGRAMS.md`
-for tools, conventions, and the rule that every box and arrow must be
-verified against reality.〉
+Figure references in this section correspond to design artifacts in `docs/design/`.
+
+- **Figure 1. High-level architecture diagram** — `docs/design/architecture.md`  
+  Shows major components (UI, simulation core, scenario generation, validation, loader, logging/reporting) and their interactions.
+
+- **Figure 2. System context diagram** — `docs/design/system-context.md`  
+  Defines system boundaries and external actors/services, including users and LLM/API dependencies.
+
+- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`  
+  Shows parameter input through generation, validation, loading, user interaction logging, and after-action reporting.
+
+- **Figure 4. ER diagram for scenario schema and action logs** — `docs/design/data-model.md`  
+  Models structured scenario entities and action-history relationships.
+
+- **Figure 5. Sequence diagram for critical scenario flow** — `docs/design/scenario-sequence.md`  
+  Covers configure -> generate -> validate -> load -> investigate/respond -> report flow.
+
+- **Figure 6. User flow / screen-flow diagram** — `docs/design/user-flow.md`  
+  Captures the training loop and key desktop-screen transitions.
 
 ### Specification and design documents
 
-**Every specification and design document the team writes is listed here**
-with the objective it serves. This section is the index of the project's
-technical detail: §3 holds the argument, §4 holds the documents that make it
-buildable. CI gate G9 fails if a document exists in `docs/specs/` or
-`docs/design/` that this section does not link.
-
 | Document | Kind | Covers | Issues |
 |---|---|---|---|
-| docs/specs/training-environment.md | specification | Goal 1 requirements for the interactive, secure training environment | #22, #24, #25, #26, #27, #28, #29, #30, #31, #32, #46 |
-| docs/specs/ai-scenarios.md | specification | Goal 2 requirements for AI-assisted scenario generation, validation, loading, action logging, feedback, hints, and variability testing | #23, #33, #34, #35, #36, #37, #38, #39, #40, #41, #47 |
-
-〈The scaffold ships `docs/specs/example-spec.md` and
-`docs/design/example-design.md` as worked examples — read them, then delete
-them once you have your own, and list yours here.〉
-
-〈Replace these rows with your own. Each document names its epic and stories
-in its own first lines too (gate G2), so the trail runs both ways.〉
+| docs/specs/training-environment.md | specification | Goal 1 requirements for the interactive, secure training environment (simulated desktop, virtual files/processes/logs/network, malware simulation, host isolation, scenario controls) | #22, #24, #25, #26, #27, #28, #29, #30, #31, #32, #46 |
+| docs/specs/ai-scenarios.md | specification | Goal 2 requirements for scenario configuration, schema definition, NRP.ai generation flow, Pydantic validation, scenario loading, action logging, reporting, hints, and variability testing | #23, #33, #34, #35, #36, #37, #38, #39, #40, #41, #47 |
+| docs/design/architecture.md | design | High-level architecture and component boundaries for Goal 1 and Goal 2 capabilities | #53 |
+| docs/design/system-context.md | design | External actors/services and system boundary definition | #54 |
+| docs/design/data-flow.md | design | End-to-end flow of scenario generation, validation, loading, and reporting data | #55 |
+| docs/design/data-model.md | design | ER model for scenario schema and action-log persistence concepts | #56 |
+| docs/design/scenario-sequence.md | design | Critical runtime interaction sequence across core scenario lifecycle | #57 |
+| docs/design/user-flow.md | design | User game-loop and desktop screen navigation flow | #58 |
 
 ### Planned activities — the work items
 
-The goals and objectives live in §2 as epics and user stories. **This section
-links every *other* work item: features, enhancements, bugs, tasks, and
-sub-tasks** — the concrete activities that deliver those objectives. CI gate
-G8 fails if such an issue exists that this section does not link.
-
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
-| #44 | task | [Going over Diagram Tasks and assigning priorities: #44] | #22, #23 | jvillacorte | Sprint 2 |
-| #45 | task | [Project Vision and Task Distribution: #45] | #22, #23 | jvillacorte | Sprint 2 |
 | #46 | task | [Create Requirements List for Goal 1: #46] | #22 | jvillacorte | Sprint 2 |
 | #47 | task | [Create Requirements List for Goal 2: #47] | #23 | jvillacorte | Sprint 2 |
-
-〈Replace these rows with your own, and keep the table current as you file new
-issues — with §2 it gives a reader every planned activity in one place, each
-traceable to the objective it serves.〉
+| #53 | task | [High-level Architecture Diagram: #53] | #22, #23 | danjobo | Sprint 2 |
+| #54 | task | [System context diagram for Cyber Sandbox: #54] | #22, #23 | NguyenVGH | Sprint 2 |
+| #55 | task | [Data flow diagram for scenario generation and evaluation: #55] | #23 | alexgoodson-1991 | Sprint 2 |
+| #56 | task | [ER diagram for scenario schema and action logs: #56] | #23 | NguyenVGH | Sprint 2 |
+| #57 | task | [UML sequence diagram for critical scenario flow: #57] | #22, #23 | Jake-P-N | Sprint 2 |
+| #58 | task | [User flow diagram for game loop and desktop screens: #58] | #22 | jvillacorte | Sprint 2 |
+| #59 | task | [Write proposal §4 environment and resources: #59] | #22, #23 | NguyenVGH | Sprint 2 |
+|
 
 ## 5. Project Outcomes
 
