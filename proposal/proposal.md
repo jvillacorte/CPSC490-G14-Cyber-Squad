@@ -86,14 +86,16 @@ We selected this approach over static handcrafted scenarios because it supports 
 
 | Category | Choice | Why this choice supports our approach |
 |---|---|---|
-| Language | Python | Aligns with team familiarity and supports rapid prototyping for simulation logic and AI integration. |
-| Desktop framework | PySide6 | Provides a practical GUI path for a simulated desktop interface (file/process/log/network views) with lower setup overhead than a game engine. |
-| Validation | Pydantic | Enforces structured scenario schemas and reject-invalid-before-load behavior required by Goal 2. |
-| AI integration | NRP.ai-backed LLM endpoint | Supports parameterized scenario generation and AI-assisted feedback workflows in Goal 2. |
-| Platform | Local desktop development environment | Simplifies Sprint 2 prototype wiring and demo execution from a clean clone. |
-| Data/state model | In-memory simulation state for Sprint 2 | Enforces host isolation and safe behavior while preserving realistic training interactions. |
-| Secrets/config | `.env`-based configuration (`.env.example` committed, no real secrets) | Enables reproducible setup without exposing credentials. |
-| Dev quality/tooling | GitHub Issues/PR workflow + CI + sprint-report | Preserves traceability from issue -> PR -> merged evidence and supports sprint scoring workflows. |
+| Language(s) | Python 3.x | Python supports rapid implementation of an in-memory simulation and straightforward integration with validation and AI services described in §3. |
+| Framework / engine | PySide6 (desktop UI), Pydantic (schema validation) | PySide6 enables a desktop-style training interface, while Pydantic enforces structured scenario data before load, matching our safety-first architecture in §3. |
+| Platform and OS | Local desktop development and demo on Windows/macOS/Linux (Python-supported) | Cross-platform local execution allows repeatable Sprint 2 demos from a clean clone without deployment complexity. |
+| Data store | In-memory state for Sprint 2 prototype; optional file-based fixtures for test scenarios | In-memory state enforces host isolation and fast reset/restart behavior central to the proposed approach. |
+| Hosting or hardware | Local machine runtime for prototype/demo (no production hosting in Sprint 2) | Sprint 2 focuses on specification/design/prototype wiring rather than production deployment, consistent with §3 scope. |
+| Sponsor data | Independent project; no external sponsor dataset required in Sprint 2 | Avoiding sponsor-data dependency reduces integration risk while validating core simulation and workflow design. |
+| APIs and accounts | NRP.ai-compatible LLM endpoint (account + API key), configured via environment variables | External AI is required for scenario generation/feedback in Goal 2, and environment-variable configuration preserves security and reproducibility. |
+| Secrets handling | `.env` locally, `.env.example` in repo, no real secrets committed | This supports safe collaboration and aligns with the controlled, reviewable process in §3. |
+| Dev tools | GitHub Issues/Projects, Pull Requests, Actions CI, `check_repo.py`, sprint-report workflow | These tools provide traceability from requirements to implementation and enforce quality/process checks during sprint execution. |
+| Testing tools | `pytest` (prototype/tests), validation-focused test cases for schema and host isolation | Test automation is required to verify safety constraints and objective-level acceptance criteria from §3 and the specs. |
 
 ### Diagrams
 
