@@ -9,7 +9,7 @@
 | Name | GitHub | Role | Leader |
 |---|---|---|---|
 | Villacorte, Joseph | @jvillacorte | docs lead | ✅ |
-| Boynton, Daniel | @danjobo | Backend Lead | |
+| Boynton, Daniel | @danjobo | Developer / Scrum Master | |
 | Vanna Nguyen | @NguyenVGH | Frontend Lead | |
 | Alex Goodson | @alexgoodson-1991 | Security & Testing Lead | |
 | Jake Nellesen | @Jake-P-N | DevOps | |
