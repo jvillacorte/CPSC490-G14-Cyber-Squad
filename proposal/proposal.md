@@ -127,8 +127,7 @@ buildable. CI gate G9 fails if a document exists in `docs/specs/` or
 
 | Document | Kind | Covers | Issues |
 |---|---|---|---|
-| 〈docs/specs/account-management.md〉 | specification | 〈account management requirements〉 | 〈#n, #n〉 |
-| 〈docs/design/architecture.md〉 | design | 〈system architecture + data model〉 | 〈#n〉 |
+| docs/specs/training-environment.md | specification | Goal 1 requirements for the interactive, secure training environment | #22, #24, #25, #26, #27, #28, #29, #30, #31, #32, #46 |
 
 〈The scaffold ships `docs/specs/example-spec.md` and
 `docs/design/example-design.md` as worked examples — read them, then delete
@@ -146,8 +145,7 @@ G8 fails if such an issue exists that this section does not link.
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
-| 〈#n〉 | 〈task〉 | 〈stand up the prototype login endpoint〉 | 〈#story〉 | 〈owner〉 | 〈Sprint 1〉 |
-| 〈#n〉 | 〈feature/enhancement/bug/task/sub-task〉 | 〈…〉 | 〈#story〉 | 〈…〉 | 〈…〉 |
+| #46 | task | [Create Requirements List for Goal 1: #46] | #22 | jvillacorte | Sprint 2 |
 
 〈Replace these rows with your own, and keep the table current as you file new
 issues — with §2 it gives a reader every planned activity in one place, each
@@ -211,4 +209,3 @@ what fraction of each artifact was AI-assisted, and how you verified it.〉
 [3] CyberDefenders, "CyberDefenders," https://cyberdefenders.org/
 [4] LetsDefend, "LetsDefend," https://letsdefend.io/
 [5] CyLab Security Academy, "CyLab Security Academy," https://cylabacademy.org/
-
