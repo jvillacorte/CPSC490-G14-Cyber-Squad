@@ -42,8 +42,8 @@ P2- Limited Scenario Variation and ability for Repeated Learning Opportunities: 
 
 | Problem | Addressed by |
 |---|---|
-| P1 Limited access to safe and practical cybersecurity training | Goal 1: Develop an interactive and secure cybersecurity training environment (#1) |
-| P2 Limited scenario variation and opportunities for repeated learning experiences | Goal 2: Integrate AI-assisted mechanics through scenario generation and custom generated feedback (#2) |
+| P1 Limited access to safe and practical cybersecurity training | Goal 1: Develop an interactive and secure cybersecurity training environment (#22) |
+| P2 Limited scenario variation and opportunities for repeated learning experiences | Goal 2: Integrate AI-assisted mechanics through scenario generation and custom-generated feedback (#23) |
 
 ## 2. Goals and Objectives
 
@@ -146,6 +146,8 @@ G8 fails if such an issue exists that this section does not link.
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
+| #44 | task | [Going over Diagram Tasks and assigning priorities: #44] | #22, #23 | jvillacorte | Sprint 2 |
+| #45 | task | [Project Vision and Task Distribution: #45] | #22, #23 | jvillacorte | Sprint 2 |
 | #46 | task | [Create Requirements List for Goal 1: #46] | #22 | jvillacorte | Sprint 2 |
 | #47 | task | [Create Requirements List for Goal 2: #47] | #23 | jvillacorte | Sprint 2 |
 
