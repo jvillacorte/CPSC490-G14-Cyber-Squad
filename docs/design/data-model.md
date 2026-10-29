@@ -13,13 +13,13 @@ This document specifies the structural data entities, attributes, constraints, a
 
 ## Mermaid Source
 
-`mermaid
+```mermaid
 erDiagram
     SCENARIO_CONFIG ||--|| SCENARIO_PAYLOAD : "initiates generation of"
     SCENARIO_PAYLOAD ||--|{ FILE_ARTIFACT : "specifies filesystem items"
     SCENARIO_PAYLOAD ||--|{ PROCESS_RECORD : "defines active processes"
     SCENARIO_PAYLOAD ||--|{ NETWORK_CONNECTION : "defines network telemetry"
-    SCENARIO_PAYLOAD ||--|{ SYSTEM_LOG_ENTRT : "populates event logs"
+    SCENARIO_PAYLOAD ||--|{ SYSTEM_LOG_ENTRY : "populates event logs"
     SCENARIO_PAYLOAD ||--|{ IR_OBJECTIVE : "mandates tasks"
     SCENARIO_PAYLOAD ||--|{ CONTEXTUAL_HINT : "provisions tier hints"
 
@@ -39,7 +39,7 @@ erDiagram
         string payload_id PK "UUID generated scenario payload"
         string config_id FK "Reference to source configuration"
         string title "Descriptive scenario name"
-        string description "Narriative scenario briefing"
+        string description "Narrative scenario briefing"
         string incident_type "Classification identifier"
         boolean pydantic_validated "Schema verification status"
         datetime generated_at "Generation timestamp"
@@ -128,7 +128,7 @@ erDiagram
         float score_percentage "Normalized trainee grade 0.0 - 100.0"
         int duration_seconds "Total elapsed active investigation time"
         int hints_requested_count "Count of tier hints viewed"
-        string executive_summary "Ai-synthesized incident summary"
+        string executive_summary "AI-synthesized incident summary"
         string remediation_recommendations "AI-generated corrective advice"
         datetime generated_at "Report creation timestamp"
     }
