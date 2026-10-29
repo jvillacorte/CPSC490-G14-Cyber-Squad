@@ -107,8 +107,11 @@ Figure references in this section correspond to design artifacts in `docs/design
 - **Figure 2. System context diagram** — `docs/design/system-context.md`  
   Defines system boundaries and external actors/services, including users and LLM/API dependencies.
 
-- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`  
-  Shows parameter input through generation, validation, loading, user interaction logging, and after-action reporting.
+- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`
+  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and persistent logging/reporting outputs.
+
+  ![Figure 3: System Data Flow Diagram](../docs/design/images/data-flow-diagram.png)
+  *Figure 3: System Data Flow Diagram modeling parameter input through generation, validation, desktop loading, chronological action logging, and after-action reporting.*
 
 - **Figure 4. ER diagram for scenario schema and action logs** — `docs/design/data-model.md`  
   Models structured scenario entities and action-history relationships.
@@ -154,6 +157,8 @@ Figure references in this section correspond to design artifacts in `docs/design
 
 | Issue | Type | Activity | Parent | Owner | Sprint |
 |---|---|---|---|---|---|
+| [[task:#44]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44) | task | [Going over Diagram Tasks and assigning priorities: #44](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44) | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | Project team | Sprint 2 |
+| [[task:#45]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45) | task | [Project Vision and Task Distribution: #45](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45) | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53)  [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) | Project team | Sprint 2 |
 | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) | task | [Create Requirements List for Goal 1: #46](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22) | jvillacorte | Sprint 2 |
 | [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | task | [Create Requirements List for Goal 2: #47](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
 | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) | task | [High-level Architecture Diagram: #53](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | danjobo | Sprint 2 |
