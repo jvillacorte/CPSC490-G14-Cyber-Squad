@@ -102,7 +102,10 @@ We selected this approach over static handcrafted scenarios because it supports 
 Figure references in this section correspond to design artifacts in `docs/design/`.
 
 - **Figure 1. High-level architecture diagram** — `docs/design/architecture.md`  
-  Shows major components (UI, simulation core, scenario generation, validation, loader, logging/reporting) and their interactions.
+  Figure 1 shows the three layers of the application: a PySide6 presentation layer, an in-memory simulation core, and an AI integration layer. It also marks the two safety boundaries: all simulation state stays in memory so the host computer is never accessed, and NRP.ai output must pass Pydantic validation before the scenario loader can place it in the simulation [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53).
+
+  ![Figure 1: High-level architecture diagram](../docs/design/images/architecture-diagram.png)
+  *Figure 1: High-level architecture showing the presentation layer, the AI integration layer with its untrusted-data boundary, and the in-memory simulation core with its host-isolation boundary.*
 
 - **Figure 2. System context diagram** — `docs/design/system-context.md`  
   Defines system boundaries and external actors/services, including users and LLM/API dependencies.
