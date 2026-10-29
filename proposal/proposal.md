@@ -108,7 +108,7 @@ Figure references in this section correspond to design artifacts in `docs/design
   Defines system boundaries and external actors/services, including users and LLM/API dependencies.
 
 - **Figure 3. Data flow diagram** — `docs/design/data-flow.md`
-  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and persistent logging/reporting outputs.
+  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and in-memory action logging and reporting.
 
   ![Figure 3: System Data Flow Diagram](../docs/design/images/data-flow-diagram.png)
   *Figure 3: System Data Flow Diagram modeling parameter input through generation, validation, desktop loading, chronological action logging, and after-action reporting.*
@@ -175,6 +175,8 @@ Figure references in this section correspond to design artifacts in `docs/design
 | [[task:#61]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | task | [Write proposal §3 proposed approaches: #61](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
 | [[task:#62]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | task | [Backfill Sprint 2 story metadata and typed refs: #62](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
 | [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) | task | [Align data-model.md with architecture decisions: #70](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | danjobo | Sprint 2 |
+| [[task:#72]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72) | task | [Align data-flow.md with architecture decisions: #72](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Project team | Sprint 3 |
+| [[task:#73]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73) | task | [Mark spec open questions answered by architecture decisions: #73](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Project team | Sprint 3 |
 
 ## 5. Project Outcomes
 
