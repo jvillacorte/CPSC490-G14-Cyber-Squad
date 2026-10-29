@@ -14,12 +14,16 @@ This document specifies the sequence between the AI Wrapper, the scenario_config
 ```mermaid
 sequenceDiagram
 END_USER ->> SCENARIO_CONFIG: Specifies payload objectives and details
-SCENARIO_CONFIG ->> SCENARIO_PAYLOAD: Generates a new payload according to config
-SCANARIO_PAYLOAD -->> END_USER: Alert user to payload generation
-SCENARIO_PAYLOAD ->> SIMULATION_SESSION: Load simulation session
-SIMULATION_SESSION->> END_USER: Prompt user to solve scenario
-END_USER ->> SIMULATION_SESSION: fix scenario
-SIMULATION_SESSION ->> AFTER_ACTION_REPORT: Generate report on users progress
-AFTER_ACTION_REPORT ->> SIMULATION_SESSION: Present results to end user
-SIMULATION_SESSION -) END_USER: Present Results
+SCENARIO_CONFIG ->> Application Controller: Starts scenario
+Application Controller ->> Scenario Generator: Creates Scenario and payload
+Scenario Generator ->> Pydantic Validator: Validates output
+Pydantic Validator ->> Scenario Loader: passes validation to simulation
+Scenario Loader ->> Application Controller: Validated
+Application Controller ->> Simulation Engine: Starts Simulation
+Simulation Engine ->> Simulated Desktop: Create simulated desktop
+Simulated Desktop ->> END_USER: Present challenge
+END_USER ->> Simulated Desktop: Solve Scenario
+Simulated Desktop ->> Incident Response Controller: check user action
+Incident Response Controller ->> After Action Report Generator: Generate after action report
+After Action Report Generator -) END_USER: Present Results
 ```
