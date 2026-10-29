@@ -8,6 +8,9 @@
 
 This document models the trainee's path through the Cyber-Squad Incident-Response Training Simulator: starting a scenario, investigating on the simulated desktop, performing incident-response actions, and reaching the completion and after-action report screens.
 
+![User Flow Diagram](./images/user-flow-diagram.png)
+**Figure 6:** User flow from scenario setup through investigation actions, incident-response actions, and scenario completion with the after-action report.
+
 ## Mermaid Source
 
 ```mermaid
