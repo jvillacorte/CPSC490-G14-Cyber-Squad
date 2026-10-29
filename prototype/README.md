@@ -1,8 +1,8 @@
 # Prototype
 
-Proof-of-concept code for 〈project title〉. **Prototype v0 is due Sep 27** with
-the proposal, and it grows every sprint; the Week-8 in-class check demos from
-this folder.
+Proof-of-concept code for 〈project title〉. **Prototype work starts in Sprint 2**
+(Homework #4 needs no prototype), and it grows every sprint after that; every sprint-review demo from the end of
+Sprint 2 on runs from this folder.
 
 This example implements the login slice behind story
 [#3](../../../issues/3) and task [#5](../../../issues/5) — deliberately tiny,
@@ -40,5 +40,5 @@ assumption in 〈the epic this belongs to〉.
 
 | Sprint | Increment |
 |---|---|
-| v0 (Sep 27) | login check + 4 tests (this example) |
-| Sprint 1 | 〈what you added〉 |
+| Sprint 2 (v0) | login check + 4 tests (this example) |
+| Sprint 3 | 〈what you added〉 |
