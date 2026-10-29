@@ -120,7 +120,10 @@ Figure references in this section correspond to design artifacts in `docs/design
   Covers configure -> generate -> validate -> load -> investigate/respond -> report flow.
 
 - **Figure 6. User flow / screen-flow diagram** — `docs/design/user-flow.md`  
-  Captures the training loop and key desktop-screen transitions.
+  Figure 6 shows the trainee's path from scenario setup through investigation and incident-response actions to scenario completion and the after-action report.
+
+  ![Figure 6: User Flow / Screen-Flow Diagram](../docs/design/images/user-flow-diagram.png)
+  *Figure 6: User flow diagram covering scenario start, investigation actions, response actions, and completion/report flow.*
 
 ### Specification and design documents
 
