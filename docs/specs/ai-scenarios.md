@@ -153,8 +153,8 @@ Written in EARS form — "when <trigger>, the system shall <response>".
 | Which malware categories and attack paths does the first configuration interface support? | jvillacorte | Before #33 |
 | What exact fields are required for files, processes, logs, network connections, and objectives? | jvillacorte | Before #34 |
 | Which NRP.ai API format, model, authentication method, and response mode will be used? | jvillacorte | Before #35 |
-| Should invalid scenario data be regenerated automatically, or rejected with a retry option? | jvillacorte | Before #36 |
+| Should invalid scenario data be regenerated automatically, or rejected with a retry option? **Decided:** regenerated automatically; if a scenario still cannot be produced, the user sees an error and can retry ([architecture.md §6](../design/architecture.md)). | jvillacorte | Before #36 |
 | Which user actions are included in the action log and after-action report? | jvillacorte | Before #38, #39 |
-| Should hints come from the LLM, predefined guidance, or both? | jvillacorte | Before #40 |
+| Should hints come from the LLM, predefined guidance, or both? **Decided:** from the LLM, generated live from the current scenario state, only when the user requests one ([architecture.md §6](../design/architecture.md)). | jvillacorte | Before #40 |
 | Which scenario fields may vary for identical parameters, and what minimum difference counts as distinct? | jvillacorte | Before #41 |
 | What information is excluded from prompts, logs, reports, and external AI requests? | jvillacorte | Before AI integration testing |
