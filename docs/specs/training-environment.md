@@ -117,7 +117,7 @@ host-system file, process, or network configuration changes.
 | Which process fields must be displayed beyond name, PID, and status? | jvillacorte | Before implementation of #26 |
 | Which network fields and simulated protocols must be supported? | jvillacorte | Before implementation of #28 |
 | What exact actions count as identification, containment, removal, and recovery? | jvillacorte | Before implementation of #31 |
-| What makes a scenario complete: all objectives completed, a manual completion action, or both? | jvillacorte | Before implementation of #32 |
+| What makes a scenario complete: all objectives completed, a manual completion action, or both? **Decided:** both — the scenario completes when all objectives are met or the user chooses to finish ([architecture.md §6](../design/architecture.md)). | jvillacorte | Before implementation of #32 |
 | Should the Trojan activate immediately when a scenario starts, or after a simulated user action? | jvillacorte | Before implementation of #29 |
 | What evidence will be collected to prove that host files, processes, and network configurations were not modified? | jvillacorte | Before implementation of #30 |
 | What response should the application provide if the simulation enters an invalid state? | jvillacorte | Before integration testing |
