@@ -17,14 +17,8 @@ python start_simulation.py                 # smoke run: prints a truncated sessi
 
 ## How to test
 
-```bash
-cd prototype
-pip install pytest              # once
-python -m pytest tests -q       # 4 tests
-```
-
-CI runs exactly these tests on every pull request (job **Prototype build &
-tests**).
+There are no automated tests yet; add tests alongside the first prototype
+implementation. CI warns when no tests are collected.
 
 ## What it proves
 
