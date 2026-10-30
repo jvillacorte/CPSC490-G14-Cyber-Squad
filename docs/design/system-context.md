@@ -6,14 +6,14 @@
 
 ## Mermaid Source
 ```mermaid
-gitGraph
+flowchart TD
     User["Student"]
-    External Services["API and LLM"]
+    ExternalServices["API and LLM"]
     Computer["Computer"]
     System["Cyber Sandbox Application"]
-end
+
     User --> System
-    External Services --> System
+    ExternalServices --> System
     Computer --> System
     User --> Computer
 ```
