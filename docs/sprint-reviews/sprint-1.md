@@ -1,4 +1,4 @@
-# Sprint 1 review — 〈Sep 28 – Oct 11〉
+# Sprint 1 review — 〈your group's Sprint 1 dates, e.g. Oct 1 – Oct 14〉
 
 > One file per sprint, written at the sprint boundary (the setup guide's
 > *The four sprints* section). This file, the board, and the merged PRs are

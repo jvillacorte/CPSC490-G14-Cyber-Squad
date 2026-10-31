@@ -102,13 +102,16 @@ We selected this approach over static handcrafted scenarios because it supports 
 Figure references in this section correspond to design artifacts in `docs/design/`.
 
 - **Figure 1. High-level architecture diagram** — `docs/design/architecture.md`  
-  Shows major components (UI, simulation core, scenario generation, validation, loader, logging/reporting) and their interactions.
+  Figure 1 shows the three layers of the application: a PySide6 presentation layer, an in-memory simulation core, and an AI integration layer. It also marks the two safety boundaries: all simulation state stays in memory so the host computer is never accessed, and NRP.ai output must pass Pydantic validation before the scenario loader can place it in the simulation [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53).
+
+  ![Figure 1: High-level architecture diagram](../docs/design/images/architecture-diagram.png)
+  *Figure 1: High-level architecture showing the presentation layer, the AI integration layer with its untrusted-data boundary, and the in-memory simulation core with its host-isolation boundary.*
 
 - **Figure 2. System context diagram** — `docs/design/system-context.md`  
   Defines system boundaries and external actors/services, including users and LLM/API dependencies.
 
 - **Figure 3. Data flow diagram** — `docs/design/data-flow.md`
-  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and persistent logging/reporting outputs.
+  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and in-memory action logging and reporting.
 
   ![Figure 3: System Data Flow Diagram](../docs/design/images/data-flow-diagram.png)
   *Figure 3: System Data Flow Diagram modeling parameter input through generation, validation, desktop loading, chronological action logging, and after-action reporting.*
@@ -131,7 +134,7 @@ Figure references in this section correspond to design artifacts in `docs/design
 |---|---|---|---|
 | docs/specs/training-environment.md | specification | Goal 1 requirements for the interactive, secure training environment | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[story:#24]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/24), [[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25), [[story:#26]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/26), [[story:#27]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/27), [[story:#28]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/28), [[story:#29]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/29), [[story:#30]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/30), [[story:#31]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/31), [[story:#32]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/32), [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) |
 | docs/specs/ai-scenarios.md | specification | Goal 2 requirements for AI-assisted scenario generation and feedback | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23), [[story:#33]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/33), [[story:#34]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/34), [[story:#35]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/35), [[story:#36]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/36), [[story:#37]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/37), [[story:#38]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/38), [[story:#39]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/39), [[story:#40]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/40), [[story:#41]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/41), [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) |
-| docs/design/architecture.md | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) |
+| docs/design/architecture.md | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53), [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) |
 | docs/design/system-context.md | design | System boundary and external actors/services | [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) |
 | docs/design/data-flow.md | design | Data flow from user input through AI generation, validation, loading, and reporting | [[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) |
 | docs/design/data-model.md | design | ER/data model for scenario schema and action logs | [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) |
@@ -174,6 +177,9 @@ Figure references in this section correspond to design artifacts in `docs/design
 | [[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60) | task | [Create prototype skeleton and smoke run for Sprint 2 demo: #60](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Jake-P-N | Sprint 2 |
 | [[task:#61]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | task | [Write proposal §3 proposed approaches: #61](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
 | [[task:#62]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | task | [Backfill Sprint 2 story metadata and typed refs: #62](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
+| [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) | task | [Align data-model.md with architecture decisions: #70](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | danjobo | Sprint 2 |
+| [[task:#72]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72) | task | [Align data-flow.md with architecture decisions: #72](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Project team | Sprint 3 |
+| [[task:#73]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73) | task | [Mark spec open questions answered by architecture decisions: #73](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Project team | Sprint 3 |
 
 ## 5. Project Outcomes
 

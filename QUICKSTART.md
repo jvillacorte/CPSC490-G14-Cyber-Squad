@@ -1,5 +1,10 @@
 # Quick start — one hour, start to finished setup
 
+> **New to git, or unsure how to start the proposal and the board?** Read
+> **[First Steps](https://kyoungshin.github.io/CPSC490/first-steps.html)** — HW#4 and HW#5 in `proposal.md`, goals and
+> objectives locked as epics and stories by Sun Oct 11 (with HW#5), the Sprint
+> Board, and Sprint 1 story points, step by step with every git command.
+
 **Read this page first.** It is the whole setup, in order, as commands and
 clicks. Everything else in this repository is reference material you read
 when you need it (map at the bottom).
@@ -73,6 +78,10 @@ examples to read and then delete once you have your own — the harness treats
 them as reference material, so they will not fail your CI while they sit
 there.
 
+Later, to bring in the latest course files without redoing this step, run
+`bash scripts/update-course-files.sh` from inside your repository (the setup
+guide's *Getting the latest course files*).
+
 ## 4. Leader: set up branches, labels, milestones, board (1 command)
 
 Everything in this step is automated. From inside your repository:
@@ -107,6 +116,9 @@ git switch -c develop && git push -u origin develop
 
 Then **Settings → Branches → Add branch ruleset**, once for `main` and once
 for `develop`:
+- **Target branches → Add target → Include by pattern** → type `main` (or
+  `develop`). **Do not pick *All branches*:** it blocks every push to every
+  branch, your `feature/…` branches included, and nobody can work
 - Require a pull request before merging
 - Require approvals: **1**
 - Dismiss stale approvals when new commits are pushed
@@ -181,6 +193,7 @@ read it all at once.
 
 | When | Read |
 |---|---|
+| New to git, or stuck on how to start | **[First Steps](https://kyoungshin.github.io/CPSC490/first-steps.html)** — proposal → epics/stories → board → story points, every command listed |
 | Before Sprint 1, everyone | [`docs/aidlc/hitl-gates.md`](docs/aidlc/hitl-gates.md) — the seven gates and the LLM failure each one catches |
 | Before you first use an LLM on this project | [`docs/aidlc/prompt-library.md`](docs/aidlc/prompt-library.md) — the standard prompts |
 | Before your first PR | [`docs/git-workflow.md`](docs/git-workflow.md) — Gitflow, CI, releases |

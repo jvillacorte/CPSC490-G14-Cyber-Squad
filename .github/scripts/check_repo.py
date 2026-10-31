@@ -494,6 +494,10 @@ def gate_hierarchy() -> None:
     issue payload - and by the `#n` under a `## Epic` / `## Parent` heading,
     which is what the issue templates ask for.
 
+    A writing task (`task` + `documentation`) is exempt: a proposal-writing
+    task with no objective above it carries its own points (course rule,
+    2026-10-01), and `scripts/sprint_report.py` is the one that asks for them.
+
     Advisory during a sprint, blocking into main, like G8 and G9: an item
     filed mid-sprint that nobody has parented yet should not redden an
     unrelated pull request.
@@ -535,6 +539,8 @@ def gate_hierarchy() -> None:
         kind = next((l for l in NEEDS_PARENT if l in labels), None)
         if kind is None:
             continue                # untyped issue: G8's business, not this gate
+        if kind == "task" and "documentation" in labels:
+            continue                # a writing task may stand alone with its own sp: (README section 4)
         if i["number"] not in parented:
             orphans += 1
             inventory_issue(g, f'#{i["number"]} ({kind}) "{i["title"][:42]}" names no '
