@@ -5,19 +5,24 @@
 
 **Group 14 — Cyber Squad** · Sponsor: independent
 Authors: Goodson, Alex (alexgoodson-1991), Boynton, Daniel (danjobo), Nellesen, Jake (Jake-P-N), Nguyen, Vanna (NguyenVGH), Villacorte, Joseph (jvillacorte)
+Repository: https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad
 Date: 2026-10-15
 
 ## 0. Abstract
 
-Cybersecurity education often emphasizes conceptual knowledge, while opportunities for repeated hands-on practice tend to be more limited in scope and practice. Thus, beginner students can benefit from supplemental environments, where they can safely apply what they have learned by practicing responding to threats without risking damage to a real system. 
+Cybersecurity education often emphasizes conceptual knowledge, while opportunities for repeated hands-on practice tend to be more limited in scope and practice. Thus, beginner students can benefit from supplemental environments, where they can safely apply what they have learned by practicing responding to threats without risking damage to a real system.
+
 This project proposes a Rogue-Lite Cybersecurity Training sandbox, an AI-assisted learning environment designed for beginner cybersecurity students. The application would be able to simulate a desktop environment, where users interact and investigate files, processes, logs, and network activity associated with malware incidents. The reach of the threats would remain enclosed within the simulated application, allowing users to practice identifying, containing, removing, and recovering from malicious activities in a controlled setting.
+
 A primary feature of this system is the use of artificial intelligence to create variation between training scenarios. An LLM would be given input parameters, such as difficulty level, malware type, and a path of attack, then generate structured scenario data based on predefined guidelines. Pydantic would be used to validate this data before it is incorporated into the simulation. AI may also provide educational explanations and an after-action report describing the entire attack, and giving feedback on the user’s response.
+
 The end goal of this project is to establish a framework for an accessible and continually repeatable cybersecurity training tool that can supplement traditional coursework with something more closely related to an actual cybersecurity event. Python and PySide6 are tentative options to create the simulated desktop interface, while a local/hosted LLM could be utilized through [NRP.ai](https://nrp.ai), which could support the dynamic scenario generation and feedback.
 
 
 ## 1. Introduction
 
 Beginner cybersecurity students would be able to learn foundational concepts through provided lectures, readings and structured lab exercises, but developing practical incident-response skills also requires the opportunity to apply that knowledge. Providing a repeatable source of malware-related exercises can present various challenges involving safety and scenario variety. Predetermined exercises also have the possibility of providing less value upon repetition, once students become familiar with their general structure/expected events and solutions.
+
 Unlike a traditional static exercise, in which the same sequences of events are presented each time, the proposed sandbox is designed around changing scenarios in which the student's understanding of their own knowledge becomes the main form of progression. While scenarios may change between attempts, the knowledge and structure of investigation developed by the student can carry into future experiences. 
 
 
@@ -171,6 +176,8 @@ This subsection walks through the tasks that carry out the goals and objectives 
 
 **Proposal writing.** In Sprint 2, jvillacorte wrote §3, proposed approaches ([[task:#61]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61)), and NguyenVGH wrote the §4 environment and resources ([[task:#59]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/59)); both serve Goals 1 and 2 by explaining how the whole system will be built. In Sprint 3 the writing turns to finishing the proposal. The team has open tasks for the spring implementation timeline in §6 ([[task:#80]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/80)), the project development plan ([[task:#84]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/84)), the outcomes and AI disclosure in §§5 and 7 ([[task:#82]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/82)), and report draft #1 ([[task:#81]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/81)). Jake-P-N's task to complete the §4 work-item references remains open ([[task:#83]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/83)). danjobo's standalone environment-and-resources prose task is also open ([[task:#93]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/93)); alexgoodson-1991's planned-activities prose task was merged into develop and main and is closed ([[task:#94]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/94)).
 
+**Word export.** The team is updating the course converter and proposal paragraph formatting so the Word submission uses the template and groups issue references in its appendix. The exported document still needs a visual review and completion of the remaining proposal placeholders before submission. [[task:#97]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/97)
+
 **Prototype.** In Sprint 3, Jake-P-N's open task covers the prototype skeleton and smoke run for the demo ([[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60)). The team also has an open spike to request structured scenario data from the AI endpoint and validate it before loading ([[task:#79]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/79)). Neither task is complete: the repository currently contains a prototype README, an empty dependency list, and a TODO Dockerfile, but no runnable simulation or tests.
 
 **Process and alignment.** In Sprint 2, the team reviewed diagram tasks and priorities ([[task:#44]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44)), set the project vision and task distribution ([[task:#45]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45)), and backfilled story metadata and typed references ([[task:#62]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62)). In Sprint 3, danjobo aligned the data model and data flow with the architecture and marked spec questions addressed by those decisions ([[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70), [[task:#72]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72), [[task:#73]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73)); the sprint review records remain open ([[task:#85]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/85)). The develop-to-main consolidation was merged and its tracking task is closed, though the prototype and diagram work still have outstanding gaps ([[task:#88]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/88)).
@@ -233,7 +240,11 @@ what fraction of each artifact was AI-assisted, and how you verified it.〉
 ## 8. References
 
 [1] TryHackMe, "TryHackMe," https://tryhackme.com/
+
 [2] Hack The Box, "Hack The Box," https://www.hackthebox.com/
+
 [3] CyberDefenders, "CyberDefenders," https://cyberdefenders.org/
+
 [4] LetsDefend, "LetsDefend," https://letsdefend.io/
+
 [5] CyLab Security Academy, "CyLab Security Academy," https://cylabacademy.org/
