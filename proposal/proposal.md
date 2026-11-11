@@ -135,6 +135,20 @@ Figure references in this section correspond to design artifacts in `docs/design
   ![Figure 6: User Flow / Screen-Flow Diagram](../docs/design/images/user-flow-diagram.png)
   *Figure 6: User flow diagram covering scenario start, investigation actions, response actions, and completion/report flow.*
 
+- **Figure 7. Virtual file system component flow** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
+
+  Figure 7 shows how a student's file action travels from the file explorer through the incident-response controller to the simulation engine, the only component that edits the in-memory file tree. Malware and incident-response actions use the same path, a change signal redraws the explorer, and nothing reaches host files [[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25).
+
+  ![Figure 7: Virtual file system component flow](../docs/design/images/vfs-components.png)
+  *Figure 7: Virtual file system component flow showing the explorer, the incident-response controller, the in-memory simulation core and the forbidden path to host files.*
+
+- **Figure 8. Create and delete file operations** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
+
+  Figure 8 shows the checks for creating and deleting a simulated file, the shared rejection path that leaves state unchanged, and the logging and redraw step that follows every successful change [[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25).
+
+  ![Figure 8: Create and delete file operations](../docs/design/images/vfs-operations.png)
+  *Figure 8: Create and delete operations with their validation checks, rejection path, and logging and redraw step.*
+
 ### Specification and design documents
 
 | Document | Kind | Covers | Issues |
@@ -147,6 +161,7 @@ Figure references in this section correspond to design artifacts in `docs/design
 | [docs/design/data-model.md](../docs/design/data-model.md) | design | ER/data model for scenario schema and action logs | [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) |
 | [docs/design/scenario-sequence.md](../docs/design/scenario-sequence.md) | design | Sequence flow across configure/generate/validate/load/play/report | [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) |
 | [docs/design/user-flow.md](../docs/design/user-flow.md) | design | User flow/game-loop and screen transitions | [[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) |
+| [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md) | design | Capabilities, component flow and file operations for the in-memory virtual file system | [[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25) |
 
 #### Document summaries
 
@@ -165,6 +180,8 @@ Figure references in this section correspond to design artifacts in `docs/design
 `docs/design/scenario-sequence.md` details the temporal interaction sequence among system components during the critical scenario lifecycle. It clarifies when each subsystem is called, what responses are expected, and where validation/failure handling occurs. This sequence reference reduces integration ambiguity and informs interface contract decisions.
 
 `docs/design/user-flow.md` describes the end-user flow through configuration, scenario execution, investigation/response actions, and completion/reporting. It maps major screens/states and transitions to ensure usability and alignment with learning objectives. This document helps ensure that UI behavior remains consistent with both Goal 1 functionality and Goal 2 AI-assisted workflows.
+
+`docs/design/virtual-file-system.md` defines the capabilities of the simulated file system for Objective 1.2: loading, navigating, inspecting, creating and deleting files, all held in memory. It lists the fields each simulated file carries, the methods other components call, and the inputs that are rejected without changing state. Figures 7 and 8 show how file actions pass through the simulation core and how create and delete reject bad input. It also describes how host isolation is tested and which files make up the deliverable, so the objective can be implemented and verified without open questions.
 
 ### Planned activities — the work items
 
