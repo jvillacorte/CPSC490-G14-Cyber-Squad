@@ -96,6 +96,17 @@ def sub_issue_children(number: int) -> set:
     return {k["number"] for k in kids if isinstance(k, dict) and "number" in k}
 
 
+# GitHub stores a milestone's due date as a DATE (00:00 UTC). A sprint runs
+# THROUGH its due date - Sprint 1 "Oct 1 - Oct 14" ends at midnight Pacific
+# at the end of Oct 14 - so the true end is the next day, 07:00 UTC.
+DUE_DAY_END = timedelta(days=1, hours=7)
+
+
+def due_end(ms: dict) -> datetime | None:
+    d = when(ms.get("due_on"))
+    return d + DUE_DAY_END if d else None
+
+
 def when(value: str | None) -> datetime | None:
     if not value:
         return None
@@ -127,8 +138,8 @@ def collect(only: int | None, trace_scope: bool) -> list[dict]:
         num = int(ms["title"].split()[-1])
         if only and num != only:
             continue
-        end = when(ms.get("due_on"))
-        prev_end = when(milestones[i - 1].get("due_on")) if i else None
+        end = due_end(ms)
+        prev_end = due_end(milestones[i - 1]) if i else None
         start = prev_end or (end - timedelta(days=SPRINT_DAYS) if end else None)
 
         issues = [x for x in api(f"/issues?milestone={ms['number']}&state=all&per_page=100")
@@ -272,7 +283,7 @@ def main() -> int:
     for r in rows:
         total = r["committed"] + r["added_mid"]
         pct = f"{r['completed']/total:.0%}" if total else "—"
-        window = (f"{r['start']:%b %d} – {r['end']:%b %d}"
+        window = (f"{r['start']:%b %d} – {r['end'] - timedelta(days=1):%b %d}"
                   if r["start"] and r["end"] else "dates not set")
         body.append([r["title"], window, r["committed"], r["added_mid"],
                      r["completed"], r["carried"], r["late"], pct])

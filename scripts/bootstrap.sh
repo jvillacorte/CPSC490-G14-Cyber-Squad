@@ -7,7 +7,8 @@
 #
 # Run it ONCE, from inside your own repository:
 #
-#     bash scripts/bootstrap.sh
+#     bash scripts/bootstrap.sh            # group read from the repo name (…-G07-…)
+#     bash scripts/bootstrap.sh 7          # or give your group number
 #
 # Requirements:
 #   - GitHub CLI installed      https://cli.github.com   (winget install GitHub.cli)
@@ -75,16 +76,38 @@ add_label "sp: 8"             "ededed" "story points - too big, split it"
 # ---------------------------------------------------------------- milestones
 step "Creating Sprint 1-4 milestones"
 EXISTING_MS=$(gh api "repos/$REPO/milestones?state=all&per_page=100" -q '.[].title' 2>/dev/null)
-add_milestone() {  # title, due (YYYY-MM-DD), description
+add_milestone() {  # title, last day of the sprint (YYYY-MM-DD), description
   if grep -qxF "$1" <<<"$EXISTING_MS"; then skip "milestone $1"; return; fi
-  gh api -X POST "repos/$REPO/milestones" -f title="$1" -f due_on="${2}T06:59:00Z" \
+  # GitHub keeps only the DATE of due_on; the sprint runs through that day.
+  gh api -X POST "repos/$REPO/milestones" -f title="$1" -f due_on="${2}T00:00:00Z" \
     -f description="$3" >/dev/null 2>&1 && ok "milestone $1 (due $2)" \
     || warn "milestone $1 could not be created"
 }
-add_milestone "Sprint 1" "2026-10-11" "Sep 28 - Oct 11 - board running, specs started, prototype demo path"
-add_milestone "Sprint 2" "2026-10-25" "Oct 12 - Oct 25 - specs per epic, prototype reworked from check feedback"
-add_milestone "Sprint 3" "2026-11-08" "Oct 26 - Nov 8 - design docs with diagrams (report draft #1 Nov 1)"
-add_milestone "Sprint 4" "2026-11-22" "Nov 9 - Nov 22 - integration, prototype stable (report draft #2 Nov 29)"
+# Sprints are per group and staggered: 14 days each, starting at the group's
+# sprint meeting and ending the day before the next one (docs/sprint-schedule.md
+# in the course repo). Homework due dates are the class schedule - not these.
+GROUP="${1:-}"
+if [ -z "$GROUP" ]; then
+  GROUP=$(sed -nE 's/.*[-_][Gg]([0-9]{1,2})([-_].*)?$/\1/p' <<<"${REPO#*/}")
+fi
+GROUP=$((10#${GROUP:-0}))
+if   [ "$GROUP" -ge 1 ]  && [ "$GROUP" -le 5 ];  then S=("Sep 29|2026-10-12|Oct 12" "Oct 13|2026-10-26|Oct 26" "Oct 27|2026-11-09|Nov 9"  "Nov 10|2026-11-23|Nov 23")
+elif [ "$GROUP" -ge 6 ]  && [ "$GROUP" -le 10 ]; then S=("Oct 6|2026-10-19|Oct 19"  "Oct 20|2026-11-02|Nov 2"  "Nov 3|2026-11-16|Nov 16"  "Nov 17|2026-11-30|Nov 30")
+elif [ "$GROUP" -ge 11 ] && [ "$GROUP" -le 15 ]; then S=("Oct 1|2026-10-14|Oct 14"  "Oct 15|2026-10-28|Oct 28" "Oct 29|2026-11-11|Nov 11" "Nov 12|2026-11-25|Nov 25")
+elif [ "$GROUP" -ge 16 ] && [ "$GROUP" -le 20 ]; then S=("Oct 8|2026-10-21|Oct 21"  "Oct 22|2026-11-04|Nov 4"  "Nov 5|2026-11-18|Nov 18"  "Nov 19|2026-12-02|Dec 2")
+else S=(); fi
+if [ ${#S[@]} -eq 0 ]; then
+  warn "could not tell your group number from '$REPO' - milestones skipped. Re-run as: bash scripts/bootstrap.sh <group number>"
+else
+  WHAT=("goals locked as epics/stories, board running; demo: proposal + board"
+        "specs per epic, prototype v0; first prototype demo"
+        "design docs with diagrams (report draft #1 Nov 1)"
+        "integration, prototype stable (report draft #2 Nov 29)")
+  for n in 1 2 3 4; do
+    IFS='|' read -r start due end <<<"${S[$((n-1))]}"
+    add_milestone "Sprint $n" "$due" "$start - $end - ${WHAT[$((n-1))]}"
+  done
+fi
 
 # ---------------------------------------------------------------- develop
 step "Creating the develop branch"

@@ -9,6 +9,8 @@
 #   harness       — the repository gates (.github/scripts/check_repo.py)
 #   prototype     — builds/tests prototype/ if it has anything to build
 #   pr-discipline — the PR itself links an issue and discloses AI use
+#   scaffold-copy — COURSE REPO ONLY: the tree a team gets from the
+#                   QUICKSTART copy must pass the harness on its own
 name: CI
 
 on:
@@ -42,6 +44,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python .github/scripts/check_repo.py
+
+  # Runs only in kyoungshin/CPSC490 (skipped in every team copy). Teams copy
+  # the scaffold with `git archive`, which drops `export-ignore` files, so
+  # a relative link to a course-only page passes here and fails G4 in every
+  # fresh team repo. That shipped twice (../LICENSE on 2026-09-18,
+  # docs/sponsored-projects.md on 2026-10-01 - 4 team repos red), so the
+  # check is now automatic: export exactly what a team gets, run the harness.
+  scaffold-copy:
+    name: Scaffold copy passes the harness
+    if: github.repository == 'kyoungshin/CPSC490'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Export the team copy and run the gates on it
+        run: |
+          out="$RUNNER_TEMP/team-copy"
+          mkdir -p "$out"
+          git archive HEAD | tar -x -C "$out"
+          cd "$out" && git init -q
+          python .github/scripts/check_repo.py
 
   prototype:
     name: Prototype build & tests

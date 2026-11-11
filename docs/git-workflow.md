@@ -29,7 +29,7 @@ feature       ●───●          ●───●                   feature
 **Naming.** Always lead with the issue number so the branch, the issue, and
 the PR are one trail: `feature/12-login-spec`, `feature/27-prototype-auth`,
 `hotfix/0.1.1-broken-link`. Versions are `MAJOR.MINOR.PATCH` (semver):
-`v0.1` = proposal + prototype v0 (Sep 27), `v0.2` = the Week-8 demo build,
+`v0.1` = the Homework #4 proposal (Oct 4), `v0.2` = the end-of-Sprint-2 demo build (first prototype demo),
 `v0.3` = report draft #1, `v1.0` = final submission.
 
 > **Note on this example repository.** It ships with `main` only, because it
@@ -69,9 +69,9 @@ Cut a release branch when a course deliverable is due:
 git switch develop && git pull
 git switch -c release/0.2
 # only stabilization here: fixes, formatting, version bump, report polish
-gh pr create --base main --title "Release 0.2 — Week-8 demo build"
+gh pr create --base main --title "Release 0.2 — end-of-Sprint-2 demo build"
 # after approval + green CI and merge:
-git tag -a v0.2 -m "Week-8 demo build" && git push origin v0.2
+git tag -a v0.2 -m "End-of-Sprint-2 demo build" && git push origin v0.2
 git switch develop && git merge --no-ff main   # carry the fixes back
 ```
 
@@ -124,6 +124,10 @@ reviewed, green code can ever ship.
 *Settings → Branches → Add branch ruleset* (or classic protection) for
 `main` **and** `develop`:
 
+- ✅ **Target branches → Add target → Include by pattern** → `main`, and
+  again → `develop`. ❌ Never *Include all branches* (`~ALL`): the rules
+  below would then apply to `feature/…` branches too, so no one could push
+  a branch to open a PR from
 - ✅ Require a pull request before merging
 - ✅ Require approvals: **1** — GitHub will not let you approve your own PR,
   so this is what guarantees a second pair of human eyes
