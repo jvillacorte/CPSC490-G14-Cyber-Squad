@@ -5,6 +5,14 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from ui.window import MainWindow
 
 
+def open_downloads(window):
+    window.start_button.click()
+    assert window.pages.currentIndex() == 1
+    assert window.directory_label.text() == "Virtual path: /home/student"
+    window.file_list.setCurrentRow(0)
+    assert window.directory_label.text() == "Virtual path: /home/student/Downloads"
+
+
 @pytest.fixture(scope="module")
 def app():
     application = QApplication([])
@@ -17,8 +25,7 @@ def app():
 def test_start_inspect_delete_and_restart(app, monkeypatch):
     window = MainWindow()
     window.show()
-    window.start_button.click()
-    assert window.pages.currentIndex() == 1
+    open_downloads(window)
     assert window.file_list.count() == 2
 
     window.file_list.setCurrentRow(1)
@@ -36,14 +43,14 @@ def test_start_inspect_delete_and_restart(app, monkeypatch):
     ]
 
     window.back_button.click()
-    window.start_button.click()
+    open_downloads(window)
     assert window.file_list.count() == 2
     window.close()
 
 
 def test_cancel_delete_leaves_file_in_place(app, monkeypatch):
     window = MainWindow()
-    window.start_button.click()
+    open_downloads(window)
     window.file_list.setCurrentRow(0)
     monkeypatch.setattr(
         QMessageBox, "question", lambda *args: QMessageBox.StandardButton.No
@@ -51,6 +58,45 @@ def test_cancel_delete_leaves_file_in_place(app, monkeypatch):
     window.delete_button.click()
     assert window.file_list.count() == 2
     assert len(window.controller.engine.actions) == 1
+    window.close()
+
+
+def test_create_file_in_current_virtual_directory(app, monkeypatch):
+    window = MainWindow()
+    open_downloads(window)
+    monkeypatch.setattr(
+        "ui.window.QInputDialog.getText", lambda *args: ("notes.txt", True)
+    )
+    monkeypatch.setattr(
+        "ui.window.QInputDialog.getMultiLineText",
+        lambda *args: ("Course notes", True),
+    )
+
+    window.create_button.click()
+
+    assert window.file_list.count() == 3
+    assert window.file_list.currentItem().text() == "notes.txt"
+    assert window.details.toPlainText().endswith("Course notes")
+    assert window.controller.engine.actions[0].action_type == "FILE_CREATE"
+    window.close()
+
+
+def test_directory_navigation_and_file_creation_cancel(app, monkeypatch):
+    window = MainWindow()
+    open_downloads(window)
+    window.up_button.click()
+    assert window.directory_label.text() == "Virtual path: /home/student"
+    assert window.file_list.currentItem() is None
+
+    monkeypatch.setattr(
+        "ui.window.QInputDialog.getText", lambda *args: ("", False)
+    )
+    window.create_button.click()
+
+    assert window.controller.engine.paths == (
+        "/home/student/Downloads/readme.txt",
+        "/home/student/Downloads/unexpected-update.txt",
+    )
     window.close()
 
 

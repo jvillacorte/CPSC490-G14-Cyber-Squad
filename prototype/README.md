@@ -2,9 +2,10 @@
 
 This offline proof of concept opens a PySide6 start menu and validates one
 predefined scenario with Pydantic. Start the scenario, select a simulated file
-to inspect its contents, and confirm deletion to remove it from the in-memory
-state. Return to the start screen and start again to restore the sample.
-Simulated paths are data; these actions do not operate on host files.
+to inspect its contents, navigate into virtual directories, create a simulated
+text file, and confirm deletion to remove it from the in-memory state. Return
+to the start screen and start again to restore the sample. Simulated paths are
+data; these actions do not operate on host files.
 
 ## Setup and run
 
@@ -50,10 +51,10 @@ The UI tests use Qt's offscreen platform, so they also run without a display.
 
 The sample schema covers only a title, description, and text files. It is not
 the full scenario schema, and this slice does not implement AI generation,
-malware behavior, file creation or directory navigation, a process manager,
-network viewer, objective evaluation, or reports. Action history is held in
-memory only. Host isolation for future malware behaviors still needs its own
-tests; the included file-operation check covers only this slice.
+malware behavior, deleting or creating directories, a process manager, network
+viewer, objective evaluation, or reports. Action history is held in memory
+only. Host isolation for future malware behaviors still needs its own tests;
+the included file-operation check covers only this slice.
 
 The [sample scenario](scenario/sample.py) illustrates the supported structure:
 nonempty `title` and `description` strings and a nonempty `files` array. Each

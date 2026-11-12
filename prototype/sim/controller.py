@@ -1,5 +1,5 @@
 from scenario.models import Scenario, SimulatedFile
-from sim.engine import SimulationEngine
+from sim.engine import DirectoryEntry, SimulationEngine
 
 
 class SimulationController:
@@ -16,6 +16,12 @@ class SimulationController:
 
     def file_paths(self) -> tuple[str, ...]:
         return self._active_engine().paths
+
+    def list_directory(self, path: str) -> tuple[DirectoryEntry, ...]:
+        return self._active_engine().list_directory(path)
+
+    def create_file(self, directory: str, name: str, contents: str = "") -> str:
+        return self._active_engine().create_file(directory, name, contents)
 
     def inspect_file(self, path: str) -> SimulatedFile:
         return self._active_engine().inspect_file(path)

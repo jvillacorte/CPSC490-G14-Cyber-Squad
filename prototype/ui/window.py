@@ -2,6 +2,7 @@ from pydantic import ValidationError
 from PySide6.QtCore import QSignalBlocker, Qt
 from PySide6.QtWidgets import (
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QListWidget,
     QListWidgetItem,
@@ -53,6 +54,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.description)
         layout.addWidget(QLabel("Simulated files"))
 
+        self.directory_label = QLabel()
+        layout.addWidget(self.directory_label)
         files_layout = QHBoxLayout()
         self.file_list = QListWidget()
         self.file_list.currentItemChanged.connect(self._selection_changed)
@@ -64,6 +67,12 @@ class MainWindow(QMainWindow):
         layout.addLayout(files_layout)
 
         actions = QHBoxLayout()
+        self.up_button = QPushButton("Up")
+        self.up_button.clicked.connect(self._go_up)
+        actions.addWidget(self.up_button)
+        self.create_button = QPushButton("New simulated file")
+        self.create_button.clicked.connect(self._create_file)
+        actions.addWidget(self.create_button)
         self.delete_button = QPushButton("Delete simulated file")
         self.delete_button.setEnabled(False)
         self.delete_button.clicked.connect(self._delete_selected)
@@ -83,14 +92,51 @@ class MainWindow(QMainWindow):
 
         self.title.setText(scenario.title)
         self.description.setText(scenario.description)
+        self._show_directory("/home/student")
+        self.pages.setCurrentIndex(1)
+
+    def _show_directory(self, path: str) -> None:
+        self.current_directory = path
+        self.directory_label.setText(f"Virtual path: {path}")
+        self.up_button.setEnabled(path != "/")
         self.file_list.clear()
-        for path in self.controller.file_paths():
-            item = QListWidgetItem(path)
-            item.setData(Qt.ItemDataRole.UserRole, path)
+        for entry in self.controller.list_directory(path):
+            label = f"{entry.name}/" if entry.is_directory else entry.name
+            item = QListWidgetItem(label)
+            item.setData(Qt.ItemDataRole.UserRole, entry.path)
+            item.setData(Qt.ItemDataRole.UserRole + 1, entry.is_directory)
             self.file_list.addItem(item)
         self.details.clear()
         self.delete_button.setEnabled(False)
-        self.pages.setCurrentIndex(1)
+
+    def _go_up(self) -> None:
+        if self.current_directory == "/":
+            return
+        parent = self.current_directory.rsplit("/", 1)[0] or "/"
+        self._show_directory(parent)
+
+    def _create_file(self) -> None:
+        name, accepted = QInputDialog.getText(
+            self, "New simulated file", "File name:"
+        )
+        if not accepted:
+            return
+        contents, accepted = QInputDialog.getMultiLineText(
+            self, "New simulated file", "Text contents:"
+        )
+        if not accepted:
+            return
+        try:
+            path = self.controller.create_file(self.current_directory, name, contents)
+        except ValueError as error:
+            QMessageBox.warning(self, "Cannot create file", str(error))
+            return
+        self._show_directory(self.current_directory)
+        for row in range(self.file_list.count()):
+            item = self.file_list.item(row)
+            if item.data(Qt.ItemDataRole.UserRole) == path:
+                self.file_list.setCurrentItem(item)
+                break
 
     def _selection_changed(self, current: QListWidgetItem | None) -> None:
         self.details.clear()
@@ -98,6 +144,9 @@ class MainWindow(QMainWindow):
         if current is None:
             return
         path = current.data(Qt.ItemDataRole.UserRole)
+        if current.data(Qt.ItemDataRole.UserRole + 1):
+            self._show_directory(path)
+            return
         try:
             file = self.controller.inspect_file(path)
         except ValueError as error:
