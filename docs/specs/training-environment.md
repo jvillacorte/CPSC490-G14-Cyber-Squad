@@ -47,6 +47,56 @@ host-system file, process, or network configuration changes.
 | FR-22 | When the user starts a scenario, the system shall initialize predefined simulated files, processes, logs, and network activity, maintain active scenario state during investigation, and prevent scenario actions when no active scenario exists. | #32 |
 | FR-23 | When the user completes, restarts, or resets a scenario, the system shall mark completion status, reload original scenario configuration for restart, clear active state for reset, and avoid host file/process/network modifications. | #32 |
 
+## Network activity viewer (Objective 1.5, #28)
+
+This section details the requirements for the network activity viewer. It
+defines what a simulated connection contains, which protocols and states the
+simulation supports, and what the viewer shows when a connection is selected.
+All connections are records in the in-memory simulation state; none
+correspond to real connections on the host computer (FR-13, NFR-3).
+
+### Connection fields
+
+Each simulated connection is a NETWORK_CONNECTION record (Figure 4,
+docs/design/data-model.md). The connection list shows five columns, chosen
+because they are the fields an analyst reads first when looking for
+suspicious traffic: where a connection comes from, where it goes, and whether
+it is still active (AC2).
+
+| Column | Field | Example |
+|---|---|---|
+| Source IP | source_ip | 10.0.0.15 |
+| Source port | source_port | 49712 |
+| Destination IP | dest_ip | 203.0.113.42 |
+| Destination port | dest_port | 4444 |
+| Status | connection_state | ESTABLISHED |
+
+When the user selects a connection, the viewer shows its detail fields (AC3):
+
+| Detail | Field | Why it matters |
+|---|---|---|
+| Protocol | protocol | Distinguishes TCP sessions from UDP or ICMP traffic |
+| Connection ID | conn_id | Identifies the connection in the action log and after-action report |
+| Direction | derived from source and destination | Outbound connections to unknown hosts are a common sign of command-and-control |
+| Owning process | process_id → PROCESS_RECORD | Links the connection to the process manager (#26) so the user can trace it to its cause |
+
+### Protocols and states
+
+The simulation supports three protocols: TCP, UDP and ICMP. These cover the
+traffic a beginner is expected to recognize, including the outbound TCP
+connections typical of a Trojan's command-and-control channel.
+
+A connection is in one of four states. LISTENING, ESTABLISHED and TIME_WAIT
+mirror what a real operating system reports. CLOSED is added so that an
+incident-response containment action (#31) has a visible result.
+
+| State | Meaning in the simulation |
+|---|---|
+| LISTENING | A simulated process is waiting for inbound connections on a port |
+| ESTABLISHED | Two endpoints are actively exchanging simulated traffic |
+| TIME_WAIT | The connection has ended and is waiting to be cleaned up |
+| CLOSED | The connection was terminated, for example by a containment action |
+
 ## Non-functional requirements
 
 | ID | Requirement | Why it matters here |
@@ -115,7 +165,7 @@ host-system file, process, or network configuration changes.
 | What specific simulated files should ransomware affect? | jvillacorte | Before implementation of #29 |
 | Which simulated files should be restorable during ransomware recovery? | jvillacorte | Before implementation of #31 |
 | Which process fields must be displayed beyond name, PID, and status? | jvillacorte | Before implementation of #26 |
-| Which network fields and simulated protocols must be supported? | jvillacorte | Before implementation of #28 |
+| Which network fields and simulated protocols must be supported? **Decided:** see "Network activity viewer" above — five list columns, four detail fields, TCP/UDP/ICMP, and four states. | jvillacorte | Before implementation of #28 |
 | What exact actions count as identification, containment, removal, and recovery? | jvillacorte | Before implementation of #31 |
 | What makes a scenario complete: all objectives completed, a manual completion action, or both? **Decided:** both — the scenario completes when all objectives are met or the user chooses to finish ([architecture.md §6](../design/architecture.md)). | jvillacorte | Before implementation of #32 |
 | Should the Trojan activate immediately when a scenario starts, or after a simulated user action? | jvillacorte | Before implementation of #29 |
