@@ -122,11 +122,17 @@ Figure references in this section correspond to design artifacts in `docs/design
 
 - **Figure 4. ER diagram for scenario schema and action logs** — [docs/design/data-model.md](../docs/design/data-model.md)
 
-  Models structured scenario entities and action-history relationships.
+  Figure 4 opens up the data held inside the Cyber Sandbox box of the system context diagram (Figure 2). A scenario configuration (malware type, difficulty and attack path) initiates one scenario payload, which defines the simulated files, processes, network connections, system log entries and incident-response objectives the student investigates. A simulation session loads that payload and records the student's actions in order, the hints they request, and the after-action report that evaluates the session [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56).
+
+  ![Figure 4: ER diagram for scenario schema and action logs](../docs/design/images/data-model-diagram.png)
+  *Figure 4: Entity-relationship diagram linking the scenario configuration and payload (files, processes, network connections, log entries and objectives) to the simulation session, its action log, hint requests and after-action report.*
 
 - **Figure 5. Sequence diagram for critical scenario flow** — [docs/design/scenario-sequence.md](../docs/design/scenario-sequence.md)
 
-  Covers configure -> generate -> validate -> load -> investigate/respond -> report flow.
+  Figure 5 traces one scenario over time across the boundary that Figure 2 draws between the user and the Cyber Sandbox. The user's configuration goes to the application controller, which has the scenario generator create a scenario; the Pydantic validator checks it and the scenario loader hands it back before the simulation engine builds the simulated desktop. The user then works the challenge on the desktop, the incident-response controller checks each action, and the after-action report generator returns the results to the user [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57).
+
+  ![Figure 5: Sequence diagram for critical scenario flow](../docs/design/images/sequence.png)
+  *Figure 5: Sequence from scenario configuration through generation, validation and loading to the simulated desktop challenge, incident-response checks and the after-action report.*
 
 - **Figure 6. User flow / screen-flow diagram** — [docs/design/user-flow.md](../docs/design/user-flow.md)
 
