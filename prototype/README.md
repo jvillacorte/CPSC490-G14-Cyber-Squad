@@ -15,6 +15,13 @@ cd prototype
 python -m venv .venv
 ```
 
+On Debian/Ubuntu, install the Qt runtime libraries before installing Python
+dependencies:
+
+```bash
+sudo apt-get install libegl1 libgl1
+```
+
 Activate the environment with `source .venv/bin/activate` on macOS/Linux or
 `.venv\Scripts\activate` in Windows Command Prompt
 (`.venv/Scripts/Activate.ps1` in PowerShell), then run:

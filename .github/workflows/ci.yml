@@ -109,6 +109,11 @@ jobs:
         if: steps.py.outputs.found == 'true'
         with:
           python-version: "3.12"
+      - name: Install Qt runtime libraries (Linux)
+        if: steps.py.outputs.found == 'true' && runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1
       - name: Install and test (Python)
         if: steps.py.outputs.found == 'true'
         working-directory: prototype
