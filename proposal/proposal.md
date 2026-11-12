@@ -5,33 +5,42 @@
 
 **Group 14 — Cyber Squad** · Sponsor: independent
 Authors: Goodson, Alex (alexgoodson-1991), Boynton, Daniel (danjobo), Nellesen, Jake (Jake-P-N), Nguyen, Vanna (NguyenVGH), Villacorte, Joseph (jvillacorte)
+Repository: https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad
 Date: 2026-10-15
 
 ## 0. Abstract
 
-Cybersecurity education often emphasizes conceptual knowledge, while opportunities for repeated hands-on practice tend to be more limited in scope and practice. Thus, beginner students can benefit from supplemental environments, where they can safely apply what they have learned by practicing responding to threats without risking damage to a real system. 
+Cybersecurity education often emphasizes conceptual knowledge, while opportunities for repeated hands-on practice tend to be more limited in scope and practice. Thus, beginner students can benefit from supplemental environments, where they can safely apply what they have learned by practicing responding to threats without risking damage to a real system.
+
 This project proposes a Rogue-Lite Cybersecurity Training sandbox, an AI-assisted learning environment designed for beginner cybersecurity students. The application would be able to simulate a desktop environment, where users interact and investigate files, processes, logs, and network activity associated with malware incidents. The reach of the threats would remain enclosed within the simulated application, allowing users to practice identifying, containing, removing, and recovering from malicious activities in a controlled setting.
+
 A primary feature of this system is the use of artificial intelligence to create variation between training scenarios. An LLM would be given input parameters, such as difficulty level, malware type, and a path of attack, then generate structured scenario data based on predefined guidelines. Pydantic would be used to validate this data before it is incorporated into the simulation. AI may also provide educational explanations and an after-action report describing the entire attack, and giving feedback on the user’s response.
+
 The end goal of this project is to establish a framework for an accessible and continually repeatable cybersecurity training tool that can supplement traditional coursework with something more closely related to an actual cybersecurity event. Python and PySide6 are tentative options to create the simulated desktop interface, while a local/hosted LLM could be utilized through [NRP.ai](https://nrp.ai), which could support the dynamic scenario generation and feedback.
 
 
 ## 1. Introduction
 
-Beginner cybersecurity students would be able to learn foundational concepts through provided lectures, readings and structured lab exercises, but developing practical incident-response skills also requires the opportunity to apply that knowledge. Providing a repeatable source of malware-related exercises can present various challenges involving safety and scenario variety. Predetermined exercises also have the possibility of providing less value upon repetition, once students become familiar with their general structure/expected events and solutions.
-Unlike a traditional static exercise, in which the same sequences of events are presented each time, the proposed sandbox is designed around changing scenarios in which the student's understanding of their own knowledge becomes the main form of progression. While scenarios may change between attempts, the knowledge and structure of investigation developed by the student can carry into future experiences. 
+Cybersecurity courses introduce foundational concepts through lectures, readings, and structured labs. Developing incident-response skills also requires repeated practice interpreting evidence, choosing actions, and evaluating their consequences. Exercises involving real malware require careful isolation and setup, which can create additional barriers for beginners. Repeating a fixed exercise can also reward familiarity with its sequence rather than practice adapting an investigation to new evidence.
+
+This proposal presents Cyber Sandbox, a desktop-style training simulator for beginner cybersecurity students. It represents files, processes, logs, and network connections as simulated evidence inside the application; students can inspect that evidence and practice incident-response actions without running real malware. The intended exercise is to investigate a simulated incident and decide how to identify, contain, remove, and recover from the threat.
+
+The longer-term design proposes scenario variation based on selected parameters, with generated scenario data validated before it is loaded into the simulation. A record of student actions could support an after-action report and contextual feedback. The initial prototype is intended to test a small, runnable slice of that design. Whether generated scenarios provide meaningful variation or improve learning remains to be evaluated; those are project goals, not established results.
 
 
 ### 1.1 Related Work
 
-Various platforms exist that provide hands-on cybersecurity training through interactive exercises, and isolated environments. For example, TryHackMe [1], and Hack The Box [2] both provide guided lessons and virtual environments where users can practice cybersecurity techniques, while something such as CyberDefenders [3] focuses more on defensive investigations involving logs, network traffic and malware related information. Similarly, LetsDefend [4] provides a simulated Security Operations Center experience where users can investigate and respond to security incidents. Another platform, such as CyLab Security Academy [5] also demonstrates a more game-oriented design, which uses challenges and progression to promote a learning environment to its students. While all of these demonstrate the value of practical cybersecurity experience/education, the proposed project would explore a path that combines a simulated desktop environment with specifically AI-generated scenario variation and feedback, which could allow beginner students to repeatedly investigate numerous types of malware incidents, which in theory would allow for a large amount of variability.
+Hands-on cybersecurity training platforms use several formats. TryHackMe offers guided learning paths and labs [1], while Hack The Box Academy organizes training into modules and practical environments [2]. CyberDefenders emphasizes blue-team investigation challenges [3]; LetsDefend offers simulated Security Operations Center (SOC) training [4]; and CyLab Security Academy uses challenge-based learning [5]. These platforms demonstrate complementary ways to teach practical skills; they are not interchangeable products with a single shared scope.
 
-| Existing approach | What it does | Pros | Cons | Why ours differs |
-|---|---|---|---|---|
-| TryHackMe [1] | Provides guided cybersecurity lessons and interactive virtual labs on it's website | Very beginner-friendly, with structured learning paths and practical exercises | Organized around preparing rooms and learning modules, which lacks a small amount of variability | Uses AI to generate varied malware scenarios with the users input, giving more freedom of choice |
-| Hack The Box [2] | Provides cybersecurity training through VMs, guided modules and technical challenges | Realistic environments and expansive offensive and defensive training | Excercises tend to require more technical knowledge, and require working with an actual VM, which may still be difficult for a beginner | Focuses on beginner-level incident response, without requiring the prerequisite of setting up a VM |
-| CyberDefenders [3] | Provides defensive cybersecurity analysis including malware, traffic logs, and forensic evidence | Emphasis on practical threat investigation and IRL security artifacts | Uses curated investigation labs, which can lack variability | Allows users to interact with a unique simulated system, practicing responding to specifically tailored malware incidents |
-| LetsDefend [4] | Simulates a Security Operations Center (SOC) where users can investigate allerts and respond to security threats | Provides a realistic workflow and incidenct-response experience | Requires much more technical knowledge, a little overwhelming for beginner cybersecurity students to get into | Focuses on desktop-level malware, providing AI-generated security validation and feedback |
-| CyLab Security Academy [5] | Provides game-oriented cybersecurity challenges, learning paths, and CTF objectives | Accessible to beginners through its challenges and method of progression. | Primarily relies on predefined challenges with established objectives, potentially limiting variation during repeated attempts. | Uses AI-generated malware scenarios to introduce changing threats and investigation requirements, encouraging students to apply previously learned knowledge to unfamiliar incidents. |
+| Existing approach | Documented emphasis | Relation to Cyber Sandbox |
+|---|---|---|
+| TryHackMe [1] | Guided learning paths and hands-on labs | Cyber Sandbox instead centers on investigating a simulated desktop incident and responding to its artifacts. |
+| Hack The Box Academy [2] | Structured training modules and practical cybersecurity environments | Cyber Sandbox has a narrower proposed scope: beginner incident response in one simulated desktop, rather than a broad catalog of technical training. |
+| CyberDefenders [3] | Blue-team investigation and forensic challenges | Cyber Sandbox proposes an interactive in-memory system whose simulated files, processes, logs, and connections can change as a student responds. |
+| LetsDefend [4] | Simulated SOC training and incident-response workflows | Cyber Sandbox focuses on endpoint-style evidence and desktop-level response actions, rather than a full SOC workflow. |
+| CyLab Security Academy [5] | Challenge-based cybersecurity learning | Cyber Sandbox proposes scenario-based incident investigation and response, rather than a capture-the-flag challenge format. |
+
+Cyber Sandbox's proposed distinction is its combination of a desktop-like simulated system, beginner-focused incident-response actions, and parameterized scenario generation. The prototype is planned to keep simulated state in memory rather than use a full cyber-range deployment or virtual-machine image, and to separate that state from host files, processes, and network settings. Generated content would be treated as untrusted input and validated before loading, while recorded actions could inform feedback. This is a focused complement to existing paths, labs, investigation platforms, SOC simulations, and challenges—not a claim that those platforms lack safety, scenario variety, or feedback. The safety boundary, quality of generated scenarios, and educational value of repeated variation still require implementation and evaluation. [[task:#113]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/113)
 
 
 ### 1.2 Problem Statements
@@ -73,8 +82,9 @@ P2- Limited Scenario Variation and ability for Repeated Learning Opportunities: 
 
 ## 3. Proposed Approaches
 
-Our project uses a **safe, in-memory cybersecurity simulation** to train beginner incident-response skills.  
-Instead of interacting with host operating-system resources, the application models files, processes, system logs, and network activity entirely inside application state. This keeps training repeatable and prevents accidental harm to the user’s machine while still allowing realistic investigation and response workflows.
+Our project proposes an **in-memory cybersecurity simulation** to train beginner incident-response skills.
+
+Instead of manipulating host operating-system resources, the application is intended to model files, processes, system logs, and network activity inside application state. This design aims to make training repeatable and prevent accidental harm to the user's machine while allowing realistic investigation and response workflows; the isolation behavior still requires implementation and testing.
 
 For scenario generation, we will combine **user-selected parameters** (malware type, difficulty, attack path) with an LLM integration to produce structured scenario data. Because LLM output can be inconsistent, generated scenarios are treated strictly as data and must pass schema validation before they can be loaded into the training environment. This design reduces unsafe or malformed outputs while preserving scenario variability.
 
@@ -84,63 +94,119 @@ We selected this approach over static handcrafted scenarios because it supports 
 
 ### Environment and resources
 
-| Category | Choice | Why this choice supports our approach |
-|---|---|---|
-| Language(s) | Python 3.x | Python supports rapid implementation of an in-memory simulation and straightforward integration with validation and AI services described in §3. |
-| Framework / engine | PySide6 (desktop UI), Pydantic (schema validation) | PySide6 enables a desktop-style training interface, while Pydantic enforces structured scenario data before load, matching our safety-first architecture in §3. |
-| Platform and OS | Local desktop development and demo on Windows/macOS/Linux (Python-supported) | Cross-platform local execution allows repeatable Sprint 2 demos from a clean clone without deployment complexity. |
-| Data store | In-memory state for Sprint 2 prototype; optional file-based fixtures for test scenarios | In-memory state enforces host isolation and fast reset/restart behavior central to the proposed approach. |
-| Hosting or hardware | Local machine runtime for prototype/demo (no production hosting in Sprint 2) | Sprint 2 focuses on specification/design/prototype wiring rather than production deployment, consistent with §3 scope. |
-| Sponsor data | Independent project; no external sponsor dataset required in Sprint 2 | Avoiding sponsor-data dependency reduces integration risk while validating core simulation and workflow design. |
-| APIs and accounts | NRP.ai-compatible LLM endpoint (account + API key), configured via environment variables | External AI is required for scenario generation/feedback in Goal 2, and environment-variable configuration preserves security and reproducibility. |
-| Secrets handling | `.env` locally, `.env.example` in repo, no real secrets committed | This supports safe collaboration and aligns with the controlled, reviewable process in §3. |
-| Dev tools | GitHub Issues/Projects, Pull Requests, Actions CI, `check_repo.py`, sprint-report workflow | These tools provide traceability from requirements to implementation and enforce quality/process checks during sprint execution. |
-| Testing tools | `pytest` (prototype/tests), validation-focused test cases for schema and host isolation | Test automation is required to verify safety constraints and objective-level acceptance criteria from §3 and the specs. |
+The planned implementation uses Python 3.x, PySide6 for the desktop interface, and Pydantic for scenario validation. Python supports rapid development of the in-memory simulation and its AI integration; PySide6 provides a desktop-style interface, while Pydantic can reject malformed scenario data before it is loaded. Development and demonstrations are intended to run locally on Python-supported Windows, macOS, and Linux machines, avoiding production deployment complexity while enabling repeatable clean-clone runs. These are design choices, not claims that the prototype already runs on all three platforms. [[task:#59]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/59) [[task:#93]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/93)
+
+The prototype keeps its simulated files in memory and restarts the sample from a predefined fixture. Its file operations do not intentionally modify host files; isolation for future malware behaviors still needs separate tests. The project is independent, requires no sponsor dataset, and plans to use local machines rather than production hosting for the prototype. These choices reduce external dependencies while the team validates the simulation design. [[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60)
+
+For AI-assisted generation and feedback, the team plans to use an NRP.ai-compatible LLM endpoint with an account and API key supplied through environment variables. The checked-in `.env.example` contains no secrets. While NRP.ai access is pending, an optional command-line spike requests fictional scenario data from a local Ollama server and validates it using the current minimal schema. It does not load the generated scenario into the simulation or establish that the NRP.ai integration works. [[task:#79]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/79) [[sub-task:#126]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/126)
+
+GitHub Issues and Projects, pull requests, GitHub Actions, `check_repo.py`, and the sprint-report workflow support traceability and review of the work described in §3. The prototype uses `pytest` for its limited scenario schema, simulated file actions, and interface; CI fails if tests are not collected. Tests of the complete scenario schema and isolation of each future malware behavior remain to be implemented. [[task:#83]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/83) [[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60)
+
+### Prototype implementation details
+
+The current offline slice opens a PySide6 start menu and validates a predefined scenario with Pydantic before the controller creates a fresh in-memory simulation. The trainee can navigate the virtual directories, inspect simulated file contents, create a text file, and confirm deletion; returning to the start screen and starting again restores the sample. The simulation engine records file actions in memory, and simulated paths are never used as host file paths. Setup, run, and test commands are in [prototype/README.md](../prototype/README.md). The prototype does not yet include AI generation, the complete scenario schema, malware behavior, directory creation, or the other planned desktop viewers; the placeholder Dockerfile was removed rather than presented as a working build. [[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60)
 
 ### Diagrams
 
 Figure references in this section correspond to design artifacts in `docs/design/`.
 
-- **Figure 1. High-level architecture diagram** — `docs/design/architecture.md`  
-  Shows major components (UI, simulation core, scenario generation, validation, loader, logging/reporting) and their interactions.
+- **Figure 1. High-level architecture diagram** — [docs/design/architecture.md](../docs/design/architecture.md)
 
-- **Figure 2. System context diagram** — `docs/design/system-context.md`  
-  Defines system boundaries and external actors/services, including users and LLM/API dependencies.
+  Figure 1 shows the three planned layers of the application: a PySide6 presentation layer, an in-memory simulation core, and an AI integration layer. It also marks two intended safety boundaries: simulated operations stay within in-memory state rather than modifying host resources, and NRP.ai output must pass Pydantic validation before the scenario loader can place it in the simulation [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53).
 
-- **Figure 3. Data flow diagram** — `docs/design/data-flow.md`
-  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and persistent logging/reporting outputs.
+  ![Figure 1: High-level architecture diagram](../docs/design/images/architecture-diagram.png)
+  *Figure 1: High-level architecture showing the presentation layer, the AI integration layer with its untrusted-data boundary, and the in-memory simulation core with its host-isolation boundary.*
+
+- **Figure 2. System context diagram** — [docs/design/system-context.md](../docs/design/system-context.md)
+
+  Figure 2 defines the application boundary: the student interacts with the local Cyber Sandbox, which may exchange requests and generated content with an external NRP.ai-compatible service. The host operating system is outside the boundary and must not be accessed or changed by simulated activity; scenario state and action history are in memory, not in an external database. This context view complements Figure 1's internal component layers, Figure 3's data flow, Figure 4's scenario and action-log entities, and Figure 5's interaction sequence [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54).
+
+  ![Figure 2: System context diagram showing the student, the local Cyber Sandbox application, the optional NRP.ai-compatible service, and the host-isolation constraint.](../docs/design/System-context-diagram.png)
+  *Figure 2: System context and external boundaries. The application exchanges scenario data with the student and optional LLM service; simulated activity remains separate from host operating-system resources.*
+
+- **Figure 3. Data flow diagram** — [docs/design/data-flow.md](../docs/design/data-flow.md)
+
+  Figure 3 illustrates the end-to-end data lifecycle, detailing external inputs, internal transformations across NRP.ai and Pydantic validation boundaries, and in-memory action logging and reporting.
 
   ![Figure 3: System Data Flow Diagram](../docs/design/images/data-flow-diagram.png)
   *Figure 3: System Data Flow Diagram modeling parameter input through generation, validation, desktop loading, chronological action logging, and after-action reporting.*
 
-- **Figure 4. ER diagram for scenario schema and action logs** — `docs/design/data-model.md`  
-  Models structured scenario entities and action-history relationships.
+- **Figure 4. ER diagram for scenario schema and action logs** — [docs/design/data-model.md](../docs/design/data-model.md)
 
-- **Figure 5. Sequence diagram for critical scenario flow** — `docs/design/scenario-sequence.md`  
-  Covers configure -> generate -> validate -> load -> investigate/respond -> report flow.
+  Figure 4 opens up the data held inside the Cyber Sandbox box of the system context diagram (Figure 2). A scenario configuration (malware type, difficulty and attack path) initiates one scenario payload, which defines the simulated files, processes, network connections, system log entries and incident-response objectives the student investigates. A simulation session loads that payload and records the student's actions in order, the hints they request, and the after-action report that evaluates the session [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) [[task:#111]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/111).
 
-- **Figure 6. User flow / screen-flow diagram** — `docs/design/user-flow.md`  
+  ![Figure 4: ER diagram for scenario schema and action logs](../docs/design/images/data-model-diagram.png)
+  *Figure 4: Entity-relationship diagram linking the scenario configuration and payload (files, processes, network connections, log entries and objectives) to the simulation session, its action log, hint requests and after-action report.*
+
+- **Figure 5. Sequence diagram for critical scenario flow** — [docs/design/scenario-sequence.md](../docs/design/scenario-sequence.md)
+
+  Figure 5 traces one scenario over time across the boundary that Figure 2 draws between the user and the Cyber Sandbox. The user's configuration goes to the application controller, which has the scenario generator create a scenario; the Pydantic validator checks it and the scenario loader hands it back before the simulation engine builds the simulated desktop. The user then works the challenge on the desktop, the incident-response controller checks each action, and the after-action report generator returns the results to the user [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57).
+
+  ![Figure 5: Sequence diagram for critical scenario flow](../docs/design/images/sequence.png)
+  *Figure 5: Sequence from scenario configuration through generation, validation and loading to the simulated desktop challenge, incident-response checks and the after-action report.*
+
+- **Figure 6. User flow / screen-flow diagram** — [docs/design/user-flow.md](../docs/design/user-flow.md)
+
   Figure 6 shows the trainee's path from scenario setup through investigation and incident-response actions to scenario completion and the after-action report.
 
   ![Figure 6: User Flow / Screen-Flow Diagram](../docs/design/images/user-flow-diagram.png)
   *Figure 6: User flow diagram covering scenario start, investigation actions, response actions, and completion/report flow.*
 
+- **Figure 7. Virtual file system component flow** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
+
+  Figure 7 shows how a student's file action travels from the file explorer through the incident-response controller to the simulation engine, the only component that edits the in-memory file tree. Malware and incident-response actions use the same path, a change signal redraws the explorer, and nothing reaches host files [[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99).
+
+  ![Figure 7: Virtual file system component flow](../docs/design/images/vfs-components.png)
+  *Figure 7: Virtual file system component flow showing the explorer, the incident-response controller, the in-memory simulation core and the forbidden path to host files.*
+
+- **Figure 8. Create and delete file operations** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
+
+  Figure 8 shows the checks for creating and deleting a simulated file, the shared rejection path that leaves state unchanged, and the logging and redraw step that follows every successful change [[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99).
+
+  ![Figure 8: Create and delete file operations](../docs/design/images/vfs-operations.png)
+  *Figure 8: Create and delete operations with their validation checks, rejection path, and logging and redraw step.*
+
+- **Figure 9. Network activity viewer components** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 9 shows how the network activity viewer fits into the architecture. The viewer sits in the presentation layer and holds no data of its own: it learns about connections through change notifications from the in-memory network state, and it sends the student's close requests to the incident-response controller, which rejects invalid requests and passes valid ones to the simulation engine. The engine is the only component that writes to the network state, whether the change comes from the scenario loader, a malware network event, or a containment action, and the network state has no link to the host computer's network. [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106)
+
+  ![Figure 9: Network activity viewer components](../docs/design/images/network-viewer-components.png)
+  *Figure 9: Network activity viewer components, showing the single writer of network state, change notifications to the viewer, and the forbidden link to the host network.*
+
+- **Figure 10. Connection-status lifecycle** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 10 shows the four states of a simulated connection and every transition between them. Listeners start as LISTENING and outbound connections as ESTABLISHED; the normal path continues through TIME_WAIT to CLOSED, mirroring what a real operating system reports, while a containment action moves any open connection straight to CLOSED. CLOSED is final, so closed connections remain visible as a record of what the student contained until a scenario reset discards them. [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107)
+
+  ![Figure 10: Connection-status lifecycle](../docs/design/images/network-connection-states.png)
+  *Figure 10: Connection-status state diagram with the event that triggers each transition.*
+
+- **Figure 11. Network viewer wireframe** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 11 shows the viewer as a tab of the simulated desktop during a Trojan scenario. A five-column connection list fills most of the window, a newly created connection is highlighted and a closed one is greyed, and a details panel beside the list shows the selected connection's protocol, connection ID, direction and owning process, with a link to that process in the process manager and a button that closes the connection as a containment action. [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108)
+
+  ![Figure 11: Network viewer wireframe](../docs/design/images/network-viewer-wireframe.png)
+  *Figure 11: Network viewer wireframe with numbered notes tying each part of the screen to the acceptance criteria of Objective 1.5.*
+
 ### Specification and design documents
 
 | Document | Kind | Covers | Issues |
 |---|---|---|---|
-| docs/specs/training-environment.md | specification | Goal 1 requirements for the interactive, secure training environment | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[story:#24]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/24), [[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25), [[story:#26]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/26), [[story:#27]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/27), [[story:#28]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/28), [[story:#29]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/29), [[story:#30]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/30), [[story:#31]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/31), [[story:#32]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/32), [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) |
-| docs/specs/ai-scenarios.md | specification | Goal 2 requirements for AI-assisted scenario generation and feedback | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23), [[story:#33]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/33), [[story:#34]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/34), [[story:#35]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/35), [[story:#36]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/36), [[story:#37]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/37), [[story:#38]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/38), [[story:#39]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/39), [[story:#40]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/40), [[story:#41]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/41), [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) |
-| docs/design/architecture.md | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) |
-| docs/design/system-context.md | design | System boundary and external actors/services | [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) |
-| docs/design/data-flow.md | design | Data flow from user input through AI generation, validation, loading, and reporting | [[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) |
-| docs/design/data-model.md | design | ER/data model for scenario schema and action logs | [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) |
-| docs/design/scenario-sequence.md | design | Sequence flow across configure/generate/validate/load/play/report | [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) |
-| docs/design/user-flow.md | design | User flow/game-loop and screen transitions | [[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) |
+| [docs/specs/training-environment.md](../docs/specs/training-environment.md) | specification | Goal 1 requirements for the interactive, secure training environment | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46), [[feature:#101]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/101) |
+| [docs/specs/ai-scenarios.md](../docs/specs/ai-scenarios.md) | specification | Goal 2 requirements for AI-assisted scenario generation and feedback | [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) |
+| [docs/design/architecture.md](../docs/design/architecture.md) | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53), [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) |
+| [docs/design/system-context.md](../docs/design/system-context.md) | design | System boundary and external actors/services | [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) |
+| [docs/design/data-flow.md](../docs/design/data-flow.md) | design | Data flow from user input through AI generation, validation, loading, and reporting | [[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) |
+| [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md) | design | Components, connection lifecycle, screen layout and key decisions for the network activity viewer (Objective 1.5) | [[feature:#105]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/105), [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106), [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107), [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108), [[task:#109]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/109), [[task:#110]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/110) |
+| [docs/design/data-model.md](../docs/design/data-model.md) | design | ER/data model for scenario schema and action logs | [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) |
+| [docs/design/scenario-sequence.md](../docs/design/scenario-sequence.md) | design | Sequence flow across configure/generate/validate/load/play/report | [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) |
+| [docs/design/user-flow.md](../docs/design/user-flow.md) | design | User flow/game-loop and screen transitions | [[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) |
+| [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md) | design | Capabilities, component flow and file operations for the in-memory virtual file system | [[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99) |
 
 #### Document summaries
 
 `docs/specs/training-environment.md` defines the Goal 1 requirements for the simulated desktop training environment, including functional behavior for file/process/log/network views, malware simulation, incident-response controls, and scenario lifecycle actions. It explicitly defines in-scope and out-of-scope behavior and formalizes host isolation as a core safety constraint. The specification also provides acceptance criteria and open questions to guide implementation and testing work linked to Goal 1 stories.
+
+The specification also contains a dedicated section for the network activity viewer (Objective 1.5), which turns the general requirements FR-11 to FR-13 into a specification that can be implemented directly in CPSC 491. It defines what a simulated connection contains: the five columns shown in the connection list, the protocol, connection ID, direction and owning process shown when a connection is selected, the three supported protocols, and the four connection states, including the CLOSED state that containment actions produce. It then breaks FR-11, FR-12 and FR-13 into sixteen detailed requirements covering how connections are displayed, how the display updates when connections are created or change state, how connections generated by simulated malware reach the viewer through a single network event from the malware behavior engine, and what the viewer must never do to the host computer's network. Finally, it restates each of the story's six acceptance criteria with a concrete check and the automated test or manual verification planned for implementation. [[feature:#101]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/101) [[task:#102]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/102) [[task:#103]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/103) [[task:#104]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/104)
 
 `docs/specs/ai-scenarios.md` defines the Goal 2 requirements for scenario configuration, AI generation, validation, loading, action logging, after-action reporting, hinting, and variability testing. It treats AI output as structured data and requires validation before loading to preserve reliability and safety. The document provides objective-traceable functional and non-functional requirements with acceptance criteria aligned to Goal 2 stories.
 
@@ -152,28 +218,35 @@ Figure references in this section correspond to design artifacts in `docs/design
 
 `docs/design/data-model.md` captures the conceptual entities and relationships needed for scenario definitions and action-history records used in evaluation/reporting. It defines core data structures that should remain consistent across generation, validation, simulation, and analysis steps. The model supports consistency in both implementation and test-case design.
 
+`docs/design/network-activity-viewer.md` designs the network activity viewer specified for Objective 1.5, so that it can be implemented directly in CPSC 491. It places the viewer in the presentation layer of the architecture and defines its components and their interfaces: a Pydantic connection model, an in-memory network state that notifies subscribers of every change, the simulation engine as the only writer of that state, and a single network event through which simulated malware creates or changes connections. It then traces a connection's lifecycle through its four states, lays out the screen as a tab of the simulated desktop with a connection list and a details panel, records seven key decisions together with the alternatives that were rejected, the most important being to simulate connections rather than read the host computer's network, and lists what is deliberately left for later, including implementation, integration with the malware behavior engine, filtering, and packet-level detail. [[feature:#105]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/105) [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106) [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107) [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108) [[task:#109]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/109) [[task:#110]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/110)
+
 `docs/design/scenario-sequence.md` details the temporal interaction sequence among system components during the critical scenario lifecycle. It clarifies when each subsystem is called, what responses are expected, and where validation/failure handling occurs. This sequence reference reduces integration ambiguity and informs interface contract decisions.
 
 `docs/design/user-flow.md` describes the end-user flow through configuration, scenario execution, investigation/response actions, and completion/reporting. It maps major screens/states and transitions to ensure usability and alignment with learning objectives. This document helps ensure that UI behavior remains consistent with both Goal 1 functionality and Goal 2 AI-assisted workflows.
 
+`docs/design/virtual-file-system.md` defines the capabilities of the simulated file system for Objective 1.2: loading, navigating, inspecting, creating and deleting files, all held in memory. It lists the fields each simulated file carries, the methods other components call, and the inputs that are rejected without changing state. Figures 7 and 8 show how file actions pass through the simulation core and how create and delete reject bad input. It also describes how host isolation is tested and which files make up the deliverable, so the objective can be implemented and verified without open questions.
+
 ### Planned activities — the work items
 
-| Issue | Type | Activity | Parent | Owner | Sprint |
-|---|---|---|---|---|---|
-| [[task:#44]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44) | task | [Going over Diagram Tasks and assigning priorities: #44](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44) | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | Project team | Sprint 2 |
-| [[task:#45]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45) | task | [Project Vision and Task Distribution: #45](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45) | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53)  [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) | Project team | Sprint 2 |
-| [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) | task | [Create Requirements List for Goal 1: #46](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22) | jvillacorte | Sprint 2 |
-| [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | task | [Create Requirements List for Goal 2: #47](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
-| [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) | task | [High-level Architecture Diagram: #53](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | danjobo | Sprint 2 |
-| [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) | task | [System context diagram for Cyber Sandbox: #54](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | NguyenVGH | Sprint 2 |
-| [[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) | task | [Data flow diagram for scenario generation and evaluation: #55](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | alexgoodson-1991 | Sprint 2 |
-| [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) | task | [ER diagram for scenario schema and action logs: #56](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) | [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | NguyenVGH | Sprint 2 |
-| [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) | task | [UML sequence diagram for critical scenario flow: #57](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Jake-P-N | Sprint 2 |
-| [[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) | task | [User flow diagram for game loop and desktop screens: #58](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22) | jvillacorte | Sprint 2 |
-| [[task:#59]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/59) | task | [Write proposal §4 environment and resources: #59](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/59) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | NguyenVGH | Sprint 2 |
-| [[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60) | task | [Create prototype skeleton and smoke run for Sprint 2 demo: #60](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | Jake-P-N | Sprint 2 |
-| [[task:#61]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | task | [Write proposal §3 proposed approaches: #61](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
-| [[task:#62]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | task | [Backfill Sprint 2 story metadata and typed refs: #62](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62) | [[epic:#22]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/22), [[epic:#23]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/23) | jvillacorte | Sprint 2 |
+This subsection walks through the tasks that carry out the goals and objectives in §2. The epics and user stories themselves are linked in §2; only task-type work items are cited here. The paragraphs are grouped by purpose and, within each group, by sprint, and each one names the owner, the sprint, and the goal the task serves.
+
+**Requirements and specifications.** In Sprint 2, jvillacorte turned each goal into a written requirements list. Creating the requirements list for Goal 1 ([[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46)) serves Goal 1, the interactive and secure training environment, and produced `docs/specs/training-environment.md`. Creating the requirements list for Goal 2 ([[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47)) serves Goal 2, the AI-assisted scenario mechanics, and produced `docs/specs/ai-scenarios.md`.
+
+**Design diagrams.** Sprint 2 produced most of the design figures in this section. danjobo drew the high-level architecture diagram ([[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53)), Figure 1, which serves both Goal 1 and Goal 2 by fixing the layers and safety boundaries shared by the whole system. alexgoodson-1991 drew the data flow diagram for scenario generation and evaluation ([[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55)), Figure 3, which serves Goal 2. NguyenVGH drew the ER diagram for the scenario schema and action logs ([[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56)), Figure 4, which also serves Goal 2. Jake-P-N drew the UML sequence diagram for the critical scenario flow ([[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57)), Figure 5, which serves Goals 1 and 2 because the flow crosses both the desktop and the AI pipeline. jvillacorte drew the user flow diagram for the game loop and desktop screens ([[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58)), Figure 6, which serves Goal 1. In Sprint 3, NguyenVGH completed the system context diagram for Cyber Sandbox ([[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54)), Figure 2, which serves Goals 1 and 2 by drawing the boundary between the application and its users and external AI service. alexgoodson-1991 completed the virtual file system design doc ([[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99)), which defines the design behind Figures 7 and 8 for Objective 1.2.
+
+**Network activity viewer.** For Objective 1.5, the team specified the network activity viewer ([[feature:#101]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/101)) by defining connection fields, protocols, states, and details ([[task:#102]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/102)), expanding the functional requirements ([[task:#103]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/103)), and making its acceptance criteria testable ([[task:#104]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/104)). The team is now designing the viewer ([[feature:#105]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/105)) by documenting component responsibilities ([[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106)), connection-state transitions ([[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107)), the screen wireframe ([[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108)), design decisions and rejected alternatives ([[task:#109]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/109)), and what remains undesigned ([[task:#110]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/110)).
+
+**Proposal writing.** In Sprint 2, jvillacorte wrote §3, proposed approaches ([[task:#61]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/61)), and NguyenVGH wrote the §4 environment and resources ([[task:#59]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/59)); both serve Goals 1 and 2 by explaining how the whole system will be built. In Sprint 3 the writing turns to finishing the proposal. The team has tasks for the spring implementation timeline in §6 ([[task:#80]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/80)), the project development plan ([[task:#84]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/84)), the outcomes and AI disclosure in §§5 and 7 ([[task:#82]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/82)), report draft #1 ([[task:#81]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/81)), a sourced comparison in §§1 and 1.1 ([[task:#113]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/113)), and the requirements and design narrative for §4 ([[task:#112]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/112)). The §4 environment-and-resources prose task ([[task:#93]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/93)) and planned-activities prose task ([[task:#94]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/94)) are complete; the reference-completion task is also complete ([[task:#83]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/83)).
+
+**Word export.** The team updated the course converter and proposal paragraph formatting so the Word submission uses the template and groups issue references in its appendix ([[task:#97]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/97)). Regenerate the Word file after the latest proposal edits, visually review it, and replace the remaining proposal placeholders before submission.
+
+**Prototype.** Jake-P-N's prototype skeleton task supports the offline sample and smoke run described above ([[task:#60]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/60)). A separate local Ollama spike explores generation and validation, while the NRP.ai integration and live verification remain outstanding ([[task:#79]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/79)). The initial tests cover this slice only; separate tasks cover the complete scenario-validation behavior ([[task:#114]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/114)) and host isolation for simulated malware behaviors ([[task:#115]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/115)).
+
+**Process and alignment.** In Sprint 2, the team reviewed diagram tasks and priorities ([[task:#44]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/44)), set the project vision and task distribution ([[task:#45]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/45)), and backfilled story metadata and typed references ([[task:#62]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/62)). In Sprint 3, danjobo aligned the data model and data flow with the architecture and marked spec questions addressed by those decisions ([[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70), [[task:#72]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/72), [[task:#73]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/73)); the sprint review records remain open ([[task:#85]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/85)). The develop-to-main consolidation was merged and its tracking task is closed, though the prototype and diagram work still have outstanding gaps ([[task:#88]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/88)).
+
+**Team infrastructure.** The team updated the repository README and set up a Discord server for communication ([[task:#13]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/13), [[task:#86]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/86)). Earlier workflow issues for CODEOWNERS and synchronizing the integration branch are closed as not planned ([[task:#4]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/4), [[task:#6]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/6)).
+
+**Meetings and instructor feedback.** The team's [initial Sprint 3 meeting](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/91) and [second Sprint 3 meeting](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/92) recorded planning questions and actions. Instructor feedback addressed [goals and objectives](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/21), [Word export](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/19), [standalone writing tasks](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/17), [sprint end dates](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/15), and [writing-task points](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/10). These meeting and feedback records are not currently typed as feature or task issues.
 
 ## 5. Project Outcomes
 
@@ -228,8 +301,12 @@ what fraction of each artifact was AI-assisted, and how you verified it.〉
 
 ## 8. References
 
-[1] TryHackMe, "TryHackMe," https://tryhackme.com/
-[2] Hack The Box, "Hack The Box," https://www.hackthebox.com/
-[3] CyberDefenders, "CyberDefenders," https://cyberdefenders.org/
-[4] LetsDefend, "LetsDefend," https://letsdefend.io/
+[1] TryHackMe, "Beginner Path," https://tryhackme.com/beginner-path
+
+[2] Hack The Box, "Academy," https://academy.hackthebox.com/
+
+[3] CyberDefenders, "Blue Team CTF Challenges," https://cyberdefenders.org/blueteam-ctf-challenges/
+
+[4] LetsDefend, "SOC Analyst Learning Path," https://app.letsdefend.io/path/soc-analyst-learning-path
+
 [5] CyLab Security Academy, "CyLab Security Academy," https://cylabacademy.org/

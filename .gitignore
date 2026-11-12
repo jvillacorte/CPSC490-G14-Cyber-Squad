@@ -18,6 +18,7 @@ Thumbs.db
 # Secrets — never commit these (gate G5 also scans for key patterns)
 .env
 .env.*
+!prototype/.env.example
 *.pem
 *.key
 
@@ -29,6 +30,7 @@ build/
 # Converted submissions (keep the Markdown source of truth in git;
 # commit a .docx deliberately if your team writes in Word)
 proposal/*.docx
+proposal/issues.json
 # …except the course's own: the Word template pandoc lays the proposal into,
 # and the worked example's output
 !proposal/reference.docx

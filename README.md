@@ -24,9 +24,20 @@
 - **Prototype:** [`prototype/`](prototype/) — run instructions in its README
 - **Sprint reviews:** [`docs/sprint-reviews/`](docs/sprint-reviews/)
 
+## Export the proposal to Word
+
+From the repository root, with GitHub CLI authenticated and Pandoc installed:
+
+```bash
+gh issue list --state all --limit 1000 --json number,title > proposal/issues.json
+pandoc proposal/proposal.md -o proposal/proposal.docx --reference-doc=proposal/reference.docx --lua-filter=proposal/to-word.lua --resource-path=proposal
+```
+
+Refresh `issues.json` before each export so the appendix uses current issue titles. Both generated files are ignored by Git. Check the exported cover, figures, section formatting, and appendix in Word; fill in the cover emails and replace the remaining proposal placeholders before submission.
+
 ## Project summary
 
-AI-assisted cybersecurity training environment that simulates malware incidents within a customizable, desktop-type virtual machine. Users will be able to investigate simulated files, processes, logs, and network activity, then being able to practice deleting, containing, recovering from, and preventing threats without affecting the host environment or operating system. Tentatively, the project stack will consist of Python and PySide6 for the creation of the application, the usage of Pydantic in order to validate AI-generated scenario data, and a local/hosted LLM such as NRP, which can provide variability through dynamic scenarios, hints and educational background information.
+Cyber Sandbox is a proposed AI-assisted cybersecurity training environment using an in-memory simulated desktop, not a virtual machine. Users will eventually investigate simulated files, processes, logs, and network activity and practice incident response. The current offline prototype supports inspecting and deleting simulated files; AI generation and malware behaviors are not yet implemented. Python, PySide6, and Pydantic support the prototype, while a future LLM integration is intended to provide scenario variation and feedback.
 
 ## How we work
 
