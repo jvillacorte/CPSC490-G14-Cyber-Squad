@@ -1,7 +1,7 @@
 # Design — Desktop Interface
 
 > Epic: #22 · Stories: #24
-> Owner: 〈NguyenVGH〉 · Sprint: 3 · Status: draft
+> Owner: NguyenVGH · Sprint: 3 · Status: draft
 > Specification: [`/docs/design/desktop-interfface.md`](/docs/design/desktop-interfface.md)
 
 
