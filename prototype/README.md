@@ -48,10 +48,39 @@ python -m pytest -q
 
 The UI tests use Qt's offscreen platform, so they also run without a display.
 
+## Optional local AI spike
+
+This separate command-line experiment uses a local [Ollama](https://ollama.com/)
+server; it does not change the offline GUI or load generated data into the
+simulation. Install Ollama, start its local server, and download a model, for
+example `ollama pull llama3.2`. Model downloads require internet access and
+local storage; performance depends on your hardware. With the prototype's
+Python environment active, run:
+
+```bash
+python generate_scenario.py --model llama3.2
+```
+
+The command sends a fictional-scenario prompt and the current minimal Pydantic
+JSON schema to `http://127.0.0.1:11434/api/chat`. It prints the validated
+scenario as JSON, or reports an error to standard error and exits nonzero if
+the server is unavailable, the response is malformed, or validation fails.
+It waits up to 180 seconds for the request. No API key is needed for the
+default local server. Generated content is untrusted data, never executed.
+
+The spike uses only `title`, `description`, and simulated text files; it is
+not the full scenario schema or an AI-backed GUI. Its tests use simulated
+responses and do not need Ollama. On Windows, a team member ran the command
+with Ollama 0.40.16 and `llama3.2`; it returned a scenario accepted by the
+minimal schema. This single run does not establish output quality, consistency,
+or performance. The output included a `.pdf` path with text contents, though
+binary-file handling is not implemented. This local experiment does not
+complete the NRP.ai endpoint requirement in #79.
+
 ## Current limits
 
 The sample schema covers only a title, description, and text files. It is not
-the full scenario schema, and this slice does not implement AI generation,
+the full scenario schema, and the GUI does not implement AI generation,
 malware behavior, deleting or creating directories, a process manager, network
 viewer, objective evaluation, or reports. Action history is held in memory
 only. Host isolation for future malware behaviors still needs its own tests;
