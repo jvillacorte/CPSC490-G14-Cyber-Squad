@@ -167,6 +167,7 @@ GitHub Copilot. alexgoodson-1991 gave one review across Sprints 2 and 3. The
 prototype skeleton (#60) was assigned to Jake-P-N but delivered in a pull
 request by jvillacorte, so the merged-PR column does not show who owned the
 task.
+Velocity reflects the Sprint report after closing #54 and #60, whose deliverables merged in #118 and #123.
 
 ## What we change next sprint
 
