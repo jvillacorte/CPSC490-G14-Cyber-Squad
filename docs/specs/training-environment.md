@@ -161,6 +161,29 @@ isolation tests for #30 have something concrete to check.
 | FR-13.3 | When the user closes a simulated connection, the system shall not open, close or change any host network connection or configuration. | FR-13, NFR-3, AC6 |
 | FR-13.4 | The isolation test suite shall include a test that fails if the network viewer or simulation network state uses a host networking library or system call. | FR-13, #30, AC6 |
 
+### Acceptance criteria
+
+The network activity viewer is complete when every criterion below is met.
+Each one is copied from story #28 without rewording, followed by a concrete
+check that someone who did not write the requirement can perform, and the
+verification method planned for implementation in CPSC 491. Automated tests
+run in CI without a display; manual checks are performed from a clean clone
+by following the prototype README.
+
+| # | Acceptance criterion (from #28) | How to check it | Planned verification |
+|---|---|---|---|
+| AC1 | When the user opens the network activity viewer, the system shall display a list of simulated network connections. | Load a fixture scenario with five connections in different states, open the viewer, and confirm five rows appear, including any CLOSED connection (FR-11.1). | Automated test: `test_ac1_lists_all_scenario_connections` |
+| AC2 | When a connection is displayed, the system shall include its source IP address, destination IP address, source and destination ports, and connection status. | For one fixture connection, compare each of the five columns against the fixture's values (FR-11.2). | Automated test: `test_ac2_row_shows_required_columns` |
+| AC3 | When the user selects a simulated connection, the system shall display additional information associated with that connection. | Select a connection with an owning process and confirm the details show its protocol, connection ID, direction and owning process; select one without an owning process and confirm it shows "none" (FR-11.3). | Automated test: `test_ac3_selection_shows_detail_fields`; manual check of the details panel layout |
+| AC4 | When a simulated network connection is created or changes status, the system shall update the displayed connection information. | With the viewer open, add a connection to the simulation state and confirm a new row appears; change a connection to CLOSED and confirm its row and, if selected, its details update without reopening the viewer (FR-12.1, FR-12.2). | Automated test: `test_ac4_updates_on_create_and_state_change` |
+| AC5 | When a simulated malware behavior generates network activity, the system shall display the associated simulated connection. | Trigger the Trojan behavior from the malware behavior engine (#29) and confirm its outbound connection appears with the Trojan's process as the owning process (FR-12.6, FR-12.7). | Automated test: `test_ac5_malware_connection_displayed` (requires #29) |
+| AC6 | When the user views network activity, the system shall display only simulated connections rather than accessing or modifying the host operating system's network connections. | Confirm every displayed connection exists in the scenario fixture and nothing else appears; confirm the network viewer and network state use no host networking library or system call; close a simulated connection and confirm no host connection changed (FR-13.1–FR-13.4). | Automated tests: `test_ac6_displays_only_simulated_connections` and `test_ac6_no_host_network_access`; included in the #30 isolation suite |
+
+AC1 to AC4 and AC6 can be verified using the network viewer and a scenario
+fixture alone. AC5 depends on the malware behavior engine (#29) sending the
+network event defined in FR-12.6; until that engine exists, the criterion can
+only be checked with a scripted event, which does not count as meeting it.
+
 ## Non-functional requirements
 
 | ID | Requirement | Why it matters here |
