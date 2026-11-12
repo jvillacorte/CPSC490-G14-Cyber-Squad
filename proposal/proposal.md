@@ -158,6 +158,27 @@ Figure references in this section correspond to design artifacts in `docs/design
 - **Figure 8. Create and delete file operations** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
 
   Figure 8 shows the checks for creating and deleting a simulated file, the shared rejection path that leaves state unchanged, and the logging and redraw step that follows every successful change [[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99).
+- **Figure 9. Network activity viewer components** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 9 shows how the network activity viewer fits into the architecture. The viewer sits in the presentation layer and holds no data of its own: it learns about connections through change notifications from the in-memory network state, and it sends the student's close requests to the incident-response controller, which rejects invalid requests and passes valid ones to the simulation engine. The engine is the only component that writes to the network state, whether the change comes from the scenario loader, a malware network event, or a containment action, and the network state has no link to the host computer's network. [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106)
+
+  ![Figure 9: Network activity viewer components](../docs/design/images/network-viewer-components.png)
+  *Figure 9: Network activity viewer components, showing the single writer of network state, change notifications to the viewer, and the forbidden link to the host network.*
+
+- **Figure 10. Connection-status lifecycle** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 10 shows the four states of a simulated connection and every transition between them. Listeners start as LISTENING and outbound connections as ESTABLISHED; the normal path continues through TIME_WAIT to CLOSED, mirroring what a real operating system reports, while a containment action moves any open connection straight to CLOSED. CLOSED is final, so closed connections remain visible as a record of what the student contained until a scenario reset discards them. [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107)
+
+  ![Figure 10: Connection-status lifecycle](../docs/design/images/network-connection-states.png)
+  *Figure 10: Connection-status state diagram with the event that triggers each transition.*
+
+- **Figure 11. Network viewer wireframe** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
+
+  Figure 11 shows the viewer as a tab of the simulated desktop during a Trojan scenario. A five-column connection list fills most of the window, a newly created connection is highlighted and a closed one is greyed, and a details panel beside the list shows the selected connection's protocol, connection ID, direction and owning process, with a link to that process in the process manager and a button that closes the connection as a containment action. [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108)
+
+  ![Figure 11: Network viewer wireframe](../docs/design/images/network-viewer-wireframe.png)
+  *Figure 11: Network viewer wireframe with numbered notes tying each part of the screen to the acceptance criteria of Objective 1.5.*
+
 
   ![Figure 8: Create and delete file operations](../docs/design/images/vfs-operations.png)
   *Figure 8: Create and delete operations with their validation checks, rejection path, and logging and redraw step.*
@@ -171,6 +192,7 @@ Figure references in this section correspond to design artifacts in `docs/design
 | [docs/design/architecture.md](../docs/design/architecture.md) | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53), [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) |
 | [docs/design/system-context.md](../docs/design/system-context.md) | design | System boundary and external actors/services | [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) |
 | [docs/design/data-flow.md](../docs/design/data-flow.md) | design | Data flow from user input through AI generation, validation, loading, and reporting | [[task:#55]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/55) |
+| [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md) | design | Components, connection lifecycle, screen layout and key decisions for the network activity viewer (Objective 1.5) | [[feature:#105]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/105), [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106), [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107), [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108), [[task:#109]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/109), [[task:#110]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/110) |
 | [docs/design/data-model.md](../docs/design/data-model.md) | design | ER/data model for scenario schema and action logs | [[task:#56]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/56) |
 | [docs/design/scenario-sequence.md](../docs/design/scenario-sequence.md) | design | Sequence flow across configure/generate/validate/load/play/report | [[task:#57]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/57) |
 | [docs/design/user-flow.md](../docs/design/user-flow.md) | design | User flow/game-loop and screen transitions | [[task:#58]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/58) |
@@ -191,6 +213,8 @@ The specification also contains a dedicated section for the network activity vie
 `docs/design/data-flow.md` describes how scenario data moves from user-selected parameters through AI generation, validation, loading into simulation state, and onward into logs/reports. It identifies transformations, checkpoints, and failure points where invalid data must be rejected safely. This flow supports test planning and traceability for Goal 2 behaviors.
 
 `docs/design/data-model.md` captures the conceptual entities and relationships needed for scenario definitions and action-history records used in evaluation/reporting. It defines core data structures that should remain consistent across generation, validation, simulation, and analysis steps. The model supports consistency in both implementation and test-case design.
+
+`docs/design/network-activity-viewer.md` designs the network activity viewer specified for Objective 1.5, so that it can be implemented directly in CPSC 491. It places the viewer in the presentation layer of the architecture and defines its components and their interfaces: a Pydantic connection model, an in-memory network state that notifies subscribers of every change, the simulation engine as the only writer of that state, and a single network event through which simulated malware creates or changes connections. It then traces a connection's lifecycle through its four states, lays out the screen as a tab of the simulated desktop with a connection list and a details panel, records seven key decisions together with the alternatives that were rejected, the most important being to simulate connections rather than read the host computer's network, and lists what is deliberately left for later, including implementation, integration with the malware behavior engine, filtering, and packet-level detail. [[feature:#105]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/105) [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106) [[task:#107]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/107) [[task:#108]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/108) [[task:#109]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/109) [[task:#110]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/110)
 
 `docs/design/scenario-sequence.md` details the temporal interaction sequence among system components during the critical scenario lifecycle. It clarifies when each subsystem is called, what responses are expected, and where validation/failure handling occurs. This sequence reference reduces integration ambiguity and informs interface contract decisions.
 
