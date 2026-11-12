@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Network viewer wireframe</title>
+<!-- Editable source for docs/design/images/network-viewer-wireframe.png.
+     Open in a browser to view; re-export with a full-page screenshot. -->
+<style>
+  :root { --ink:#1f2328; --mute:#6a737d; --line:#b8bec6; --pane:#f6f8fa; --hi:#fff4c2; --note:#b42318; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:32px; background:#ffffff; font:15px/1.4 Arial, Helvetica, sans-serif; color:var(--ink); width:1280px; }
+  .window { border:2px solid var(--ink); border-radius:6px; overflow:hidden; }
+  .titlebar { background:var(--ink); color:#ffffff; padding:8px 14px; font-weight:bold; display:flex; justify-content:space-between; }
+  .tabs { display:flex; border-bottom:2px solid var(--line); background:var(--pane); }
+  .tab { padding:9px 18px; border-right:1px solid var(--line); color:var(--mute); }
+  .tab.on { background:#ffffff; color:var(--ink); font-weight:bold; border-bottom:2px solid #ffffff; margin-bottom:-2px; }
+  .body { display:grid; grid-template-columns: 1fr 360px; min-height:430px; }
+  .list { padding:14px; border-right:2px solid var(--line); }
+  .head { color:var(--mute); margin-bottom:8px; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { border:1px solid var(--line); padding:7px 9px; text-align:left; }
+  th { background:var(--pane); }
+  tr.sel td { background:#dbe9ff; font-weight:bold; }
+  tr.new td { background:var(--hi); }
+  .badge { display:inline-block; padding:1px 7px; border:1px solid var(--ink); border-radius:10px; font-size:12px; }
+  .closed { color:var(--mute); }
+  .details { padding:14px; background:var(--pane); }
+  .details h3 { margin:0 0 10px; font-size:16px; }
+  .row { display:grid; grid-template-columns:130px 1fr; padding:6px 0; border-bottom:1px dashed var(--line); }
+  .k { color:var(--mute); }
+  .link { color:#0b5cad; text-decoration:underline; }
+  .btn { margin-top:16px; display:inline-block; padding:8px 14px; border:2px solid var(--ink); border-radius:4px; background:#ffffff; font-weight:bold; }
+  .status { padding:7px 14px; border-top:2px solid var(--line); color:var(--mute); background:var(--pane); }
+  .n { display:inline-block; width:22px; height:22px; line-height:22px; text-align:center; border-radius:50%; background:var(--note); color:#ffffff; font-size:12px; font-weight:bold; margin-right:6px; vertical-align:middle; }
+  .notes { margin-top:22px; display:grid; grid-template-columns:1fr 1fr; gap:8px 28px; }
+  .notes div { line-height:1.45; }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar"><span>Cyber Sandbox — Simulated desktop</span><span>Scenario: Trojan (medium)</span></div>
+  <div class="tabs">
+    <div class="tab">File explorer</div><div class="tab">Process manager</div><div class="tab">System logs</div><div class="tab on"><span class="n">1</span>Network activity</div>
+  </div>
+  <div class="body">
+    <div class="list">
+      <div class="head">6 simulated connections · simulated host 10.0.0.15</div>
+      <table>
+        <tr><th><span class="n">2</span>Source IP</th><th>Source port</th><th>Destination IP</th><th>Dest. port</th><th>Status</th></tr>
+        <tr><td>10.0.0.15</td><td>49712</td><td>93.184.216.34</td><td>443</td><td><span class="badge">ESTABLISHED</span></td></tr>
+        <tr><td>0.0.0.0</td><td>3389</td><td>—</td><td>—</td><td><span class="badge">LISTENING</span></td></tr>
+        <tr class="sel"><td>10.0.0.15</td><td>51034</td><td>203.0.113.42</td><td>4444</td><td><span class="badge">ESTABLISHED</span></td></tr>
+        <tr class="new"><td><span class="n">4</span>10.0.0.15</td><td>51088</td><td>198.51.100.7</td><td>8080</td><td><span class="badge">ESTABLISHED</span></td></tr>
+        <tr><td>10.0.0.15</td><td>49655</td><td>192.0.2.10</td><td>80</td><td><span class="badge">TIME_WAIT</span></td></tr>
+        <tr class="closed"><td>10.0.0.15</td><td>50120</td><td>203.0.113.9</td><td>6667</td><td><span class="badge">CLOSED</span> <span class="n">5</span></td></tr>
+      </table>
+    </div>
+    <div class="details">
+      <h3><span class="n">3</span>Connection details</h3>
+      <div class="row"><span class="k">Protocol</span><span>TCP</span></div>
+      <div class="row"><span class="k">Connection ID</span><span>c-7f3a…</span></div>
+      <div class="row"><span class="k">Direction</span><span>Outbound</span></div>
+      <div class="row"><span class="k">Owning process</span><span>PID 2316 · svch0st.exe — <span class="link">Open in process manager</span></span></div>
+      <div class="row"><span class="k">Status</span><span>ESTABLISHED</span></div>
+      <div class="btn"><span class="n">6</span>Close connection (containment)</div>
+    </div>
+  </div>
+  <div class="status">Simulated data only — no host network connections are read or changed.</div>
+</div>
+<div class="notes">
+  <div><span class="n">1</span>The viewer is one tool tab in the simulated desktop; opening it shows every connection in the scenario (AC1, FR-11.1).</div>
+  <div><span class="n">2</span>Five columns: source IP, source port, destination IP, destination port, status (AC2, FR-11.2).</div>
+  <div><span class="n">3</span>Selecting a row fills the details panel beside the list, which stays visible (AC3, FR-11.3, FR-11.4).</div>
+  <div><span class="n">4</span>A new or changed connection is highlighted until the student selects it (AC4, FR-12.1–FR-12.3); malware-generated connections arrive the same way (AC5, FR-12.6).</div>
+  <div><span class="n">5</span>Closed connections stay in the list, greyed, so the student can see what was contained (FR-12.4).</div>
+  <div><span class="n">6</span>Closing a connection is an incident-response action sent to the incident-response controller; the viewer never touches the host network (AC6, FR-13.3).</div>
+</div>
+</body>
+</html>
