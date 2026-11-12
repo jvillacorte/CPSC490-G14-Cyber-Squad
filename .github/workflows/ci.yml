@@ -114,18 +114,10 @@ jobs:
         working-directory: prototype
         run: |
           python -m pip install --upgrade pip
-          [ -f requirements.txt ] && pip install -r requirements.txt || true
-          [ -f pyproject.toml ] && pip install -e . || true
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install -e .; fi
           pip install pytest
-          # Ask pytest, do not guess with a glob: exit code 5 means "no tests
-          # collected", anything else non-zero is a real failure. A glob-based
-          # check silently skipped the tests and reported success.
-          set +e; python -m pytest -q; rc=$?; set -e
-          if [ "$rc" -eq 5 ]; then
-            echo "::warning::no Python tests found in prototype/ — add one before Sprint 2"
-          elif [ "$rc" -ne 0 ]; then
-            exit "$rc"
-          fi
+          python -m pytest -q
 
       - name: Nothing to build
         if: steps.node.outputs.found == 'false' && steps.py.outputs.found == 'false'

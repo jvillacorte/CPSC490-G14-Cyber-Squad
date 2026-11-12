@@ -102,7 +102,8 @@ def md_files() -> list[Path]:
     out: list[Path] = []
     for p in ROOT.rglob("*.md"):
         rel = p.relative_to(ROOT).as_posix()
-        if rel.startswith((".git/", "node_modules/")):
+        if (rel.startswith((".git/", "node_modules/"))
+                or {".venv", "venv"} & set(p.relative_to(ROOT).parts)):
             continue
         out.append(p)
     return sorted(out)
@@ -277,7 +278,8 @@ def gate_secrets() -> None:
     hits = 0
     for p in ROOT.rglob("*"):
         rel = p.relative_to(ROOT).as_posix()
-        if not p.is_file() or rel.startswith((".git/", "node_modules/")):
+        if (not p.is_file() or rel.startswith((".git/", "node_modules/"))
+                or {".venv", "venv"} & set(p.relative_to(ROOT).parts)):
             continue
         if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".gif", ".pdf", ".pptx", ".docx", ".xlsx", ".zip"):
             continue
