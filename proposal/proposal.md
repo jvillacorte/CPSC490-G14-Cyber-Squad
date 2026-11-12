@@ -111,7 +111,10 @@ Figure references in this section correspond to design artifacts in `docs/design
 
 - **Figure 2. System context diagram** — [docs/design/system-context.md](../docs/design/system-context.md)
 
-  Defines system boundaries and external actors/services, including users and LLM/API dependencies.
+  Figure 2 defines the application boundary: the student interacts with the local Cyber Sandbox, which may exchange requests and generated content with an external NRP.ai-compatible service. The host operating system is outside the boundary and must not be accessed or changed by simulated activity; scenario state and action history are in memory, not in an external database. This context view complements Figure 1's internal component layers, Figure 3's data flow, Figure 4's scenario and action-log entities, and Figure 5's interaction sequence [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54).
+
+  ![Figure 2: System context diagram showing the student, the local Cyber Sandbox application, the optional NRP.ai-compatible service, and the host-isolation constraint.](../docs/design/System-context-diagram.png)
+  *Figure 2: System context and external boundaries. The application exchanges scenario data with the student and optional LLM service; simulated activity remains separate from host operating-system resources.*
 
 - **Figure 3. Data flow diagram** — [docs/design/data-flow.md](../docs/design/data-flow.md)
 
