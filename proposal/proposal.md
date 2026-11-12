@@ -158,6 +158,10 @@ Figure references in this section correspond to design artifacts in `docs/design
 - **Figure 8. Create and delete file operations** — [docs/design/virtual-file-system.md](../docs/design/virtual-file-system.md)
 
   Figure 8 shows the checks for creating and deleting a simulated file, the shared rejection path that leaves state unchanged, and the logging and redraw step that follows every successful change [[task:#99]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/99).
+
+  ![Figure 8: Create and delete file operations](../docs/design/images/vfs-operations.png)
+  *Figure 8: Create and delete operations with their validation checks, rejection path, and logging and redraw step.*
+
 - **Figure 9. Network activity viewer components** — [docs/design/network-activity-viewer.md](../docs/design/network-activity-viewer.md)
 
   Figure 9 shows how the network activity viewer fits into the architecture. The viewer sits in the presentation layer and holds no data of its own: it learns about connections through change notifications from the in-memory network state, and it sends the student's close requests to the incident-response controller, which rejects invalid requests and passes valid ones to the simulation engine. The engine is the only component that writes to the network state, whether the change comes from the scenario loader, a malware network event, or a containment action, and the network state has no link to the host computer's network. [[task:#106]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/106)
@@ -179,15 +183,11 @@ Figure references in this section correspond to design artifacts in `docs/design
   ![Figure 11: Network viewer wireframe](../docs/design/images/network-viewer-wireframe.png)
   *Figure 11: Network viewer wireframe with numbered notes tying each part of the screen to the acceptance criteria of Objective 1.5.*
 
-
-  ![Figure 8: Create and delete file operations](../docs/design/images/vfs-operations.png)
-  *Figure 8: Create and delete operations with their validation checks, rejection path, and logging and redraw step.*
-
 ### Specification and design documents
 
 | Document | Kind | Covers | Issues |
 |---|---|---|---|
-| [docs/specs/training-environment.md](../docs/specs/training-environment.md) | specification | Goal 1 requirements for the interactive, secure training environment | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46), [[feature:#101]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/101) | |
+| [docs/specs/training-environment.md](../docs/specs/training-environment.md) | specification | Goal 1 requirements for the interactive, secure training environment | [[task:#46]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/46), [[feature:#101]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/101) |
 | [docs/specs/ai-scenarios.md](../docs/specs/ai-scenarios.md) | specification | Goal 2 requirements for AI-assisted scenario generation and feedback | [[task:#47]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/47) |
 | [docs/design/architecture.md](../docs/design/architecture.md) | design | High-level architecture and component boundaries | [[task:#53]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/53), [[task:#70]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/70) |
 | [docs/design/system-context.md](../docs/design/system-context.md) | design | System boundary and external actors/services | [[task:#54]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/54) |
