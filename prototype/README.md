@@ -69,10 +69,13 @@ It waits up to 180 seconds for the request. No API key is needed for the
 default local server. Generated content is untrusted data, never executed.
 
 The spike uses only `title`, `description`, and simulated text files; it is
-not the full scenario schema or an AI-backed GUI. Its tests use mocked responses
-and do not need Ollama. Live model output and performance remain unverified
-until tested on a machine with Ollama and a model installed. This local
-experiment does not complete the NRP.ai endpoint requirement in #79.
+not the full scenario schema or an AI-backed GUI. Its tests use simulated
+responses and do not need Ollama. On Windows, a team member ran the command
+with Ollama 0.40.16 and `llama3.2`; it returned a scenario accepted by the
+minimal schema. This single run does not establish output quality, consistency,
+or performance. The output included a `.pdf` path with text contents, though
+binary-file handling is not implemented. This local experiment does not
+complete the NRP.ai endpoint requirement in #79.
 
 ## Current limits
 
