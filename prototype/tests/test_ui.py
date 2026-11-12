@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 # Skip UI tests where Qt's system libraries (e.g. libEGL) are unavailable, such as CI.
@@ -118,4 +120,71 @@ def test_invalid_sample_shows_error_without_starting(app, monkeypatch):
     assert window.pages.currentIndex() == 0
     assert window.controller.engine is None
     assert errors and "validation" in errors[0][1].lower()
+    window.close()
+
+
+def test_load_json_file_and_navigate_from_root(app, monkeypatch, tmp_path):
+    scenario_file = tmp_path / "scenario.json"
+    scenario_file.write_text(json.dumps({
+        "title": "Generated scenario",
+        "description": "Investigate the note.",
+        "files": [{"path": "/tmp/note.txt", "contents": "Generated evidence"}],
+    }), encoding="utf-8")
+    monkeypatch.setattr(
+        "ui.window.QFileDialog.getOpenFileName",
+        lambda *args: (str(scenario_file), "JSON files (*.json)"),
+    )
+    window = MainWindow()
+
+    window.load_button.click()
+
+    assert window.pages.currentIndex() == 1
+    assert window.title.text() == "Generated scenario"
+    assert window.directory_label.text() == "Virtual path: /"
+    window.file_list.setCurrentRow(0)
+    window.file_list.setCurrentRow(0)
+    assert "Generated evidence" in window.details.toPlainText()
+    window.close()
+
+
+def test_invalid_file_and_cancel_keep_active_scenario(app, monkeypatch, tmp_path):
+    scenario_file = tmp_path / "bad.json"
+    scenario_file.write_text("invalid json", encoding="utf-8")
+    window = MainWindow()
+    window.start_button.click()
+    engine = window.controller.engine
+    window.back_button.click()
+    errors = []
+    monkeypatch.setattr(QMessageBox, "critical", lambda *args: errors.append(args))
+    monkeypatch.setattr(
+        "ui.window.QFileDialog.getOpenFileName",
+        lambda *args: (str(scenario_file), ""),
+    )
+
+    window.load_button.click()
+    assert errors and "validation" in errors[0][1].lower()
+    assert window.controller.engine is engine
+    assert window.pages.currentIndex() == 0
+
+    monkeypatch.setattr("ui.window.QFileDialog.getOpenFileName", lambda *args: ("", ""))
+    window.load_button.click()
+    assert len(errors) == 1
+    assert window.controller.engine is engine
+    window.close()
+
+
+def test_missing_scenario_file_reports_read_error(app, monkeypatch, tmp_path):
+    window = MainWindow()
+    errors = []
+    monkeypatch.setattr(QMessageBox, "critical", lambda *args: errors.append(args))
+    monkeypatch.setattr(
+        "ui.window.QFileDialog.getOpenFileName",
+        lambda *args: (str(tmp_path / "missing.json"), ""),
+    )
+
+    window.load_button.click()
+
+    assert errors and "Cannot read" in errors[0][1]
+    assert window.controller.engine is None
+    assert window.pages.currentIndex() == 0
     window.close()

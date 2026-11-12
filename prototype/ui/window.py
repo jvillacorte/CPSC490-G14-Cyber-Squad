@@ -1,6 +1,7 @@
 from pydantic import ValidationError
 from PySide6.QtCore import QSignalBlocker, Qt
 from PySide6.QtWidgets import (
+    QFileDialog,
     QHBoxLayout,
     QInputDialog,
     QLabel,
@@ -15,6 +16,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from scenario.loader import load_scenario_file
 from scenario.sample import SAMPLE_SCENARIO
 from sim.controller import SimulationController
 
@@ -35,10 +37,13 @@ class MainWindow(QMainWindow):
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.addWidget(QLabel("Cyber Sandbox — offline prototype"))
-        layout.addWidget(QLabel("Start a predefined training scenario."))
+        layout.addWidget(QLabel("Start the sample or load a scenario JSON file."))
         self.start_button = QPushButton("Start scenario")
         self.start_button.clicked.connect(self._start_scenario)
         layout.addWidget(self.start_button)
+        self.load_button = QPushButton("Load scenario JSON")
+        self.load_button.clicked.connect(self._load_scenario)
+        layout.addWidget(self.load_button)
         layout.addStretch()
         self.pages.addWidget(page)
 
@@ -84,15 +89,39 @@ class MainWindow(QMainWindow):
         self.pages.addWidget(page)
 
     def _start_scenario(self) -> None:
+        self._show_scenario(SAMPLE_SCENARIO)
+
+    def _load_scenario(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load scenario JSON", "", "JSON files (*.json);;All files (*)"
+        )
+        if not path:
+            return
         try:
-            scenario = self.controller.start_scenario(SAMPLE_SCENARIO)
+            scenario = load_scenario_file(path)
+        except (OSError, UnicodeError) as error:
+            QMessageBox.critical(self, "Cannot read scenario", str(error))
+            return
+        except ValidationError as error:
+            QMessageBox.critical(self, "Scenario validation failed", str(error))
+            return
+        self._show_scenario(scenario)
+
+    def _show_scenario(self, data: object) -> None:
+        try:
+            scenario = self.controller.start_scenario(data)
         except ValidationError as error:
             QMessageBox.critical(self, "Scenario validation failed", str(error))
             return
 
         self.title.setText(scenario.title)
         self.description.setText(scenario.description)
-        self._show_directory("/home/student")
+        initial_directory = (
+            "/home/student"
+            if any(file.path.startswith("/home/student/") for file in scenario.files)
+            else "/"
+        )
+        self._show_directory(initial_directory)
         self.pages.setCurrentIndex(1)
 
     def _show_directory(self, path: str) -> None:

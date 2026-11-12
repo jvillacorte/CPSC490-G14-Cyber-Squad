@@ -33,4 +33,9 @@ class Scenario(BaseModel):
         paths = [file.path for file in self.files]
         if len(paths) != len(set(paths)):
             raise ValueError("Simulated file paths must be unique")
+        file_paths = set(paths)
+        for path in paths:
+            parts = path.split("/")
+            if any("/".join(parts[:index]) in file_paths for index in range(2, len(parts))):
+                raise ValueError("A simulated file cannot also be a directory")
         return self

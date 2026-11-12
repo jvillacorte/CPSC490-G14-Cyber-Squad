@@ -1,11 +1,13 @@
 # Cyber Sandbox prototype
 
-This offline proof of concept opens a PySide6 start menu and validates one
-predefined scenario with Pydantic. Start the scenario, select a simulated file
+This offline proof of concept opens a PySide6 start menu and validates either
+the predefined scenario or a selected JSON scenario with Pydantic. Start the
+scenario, select a simulated file
 to inspect its contents, navigate into virtual directories, create a simulated
 text file, and confirm deletion to remove it from the in-memory state. Return
-to the start screen and start again to restore the sample. Simulated paths are
-data; these actions do not operate on host files.
+to the start screen and start the sample again or reload a JSON file to restore
+that scenario. Simulated paths are data; these actions do not operate on host
+files.
 
 ## Setup and run
 
@@ -51,8 +53,7 @@ The UI tests use Qt's offscreen platform, so they also run without a display.
 ## Optional local AI spike
 
 This separate command-line experiment uses a local [Ollama](https://ollama.com/)
-server; it does not change the offline GUI or load generated data into the
-simulation. Install Ollama, start its local server, and download a model, for
+server. Install Ollama, start its local server, and download a model, for
 example `ollama pull llama3.2`. Model downloads require internet access and
 local storage; performance depends on your hardware. With the prototype's
 Python environment active, run:
@@ -60,6 +61,20 @@ Python environment active, run:
 ```bash
 python generate_scenario.py --model llama3.2
 ```
+
+To use the result in the GUI, save it to a new file outside the repository
+and then select **Load scenario JSON** on the start screen:
+
+```bash
+python -X utf8 generate_scenario.py --model llama3.2 > ../../generated-scenario.json
+python start_simulation.py
+```
+
+The redirection overwrites that file. If generation fails, it may leave an
+empty file; check for errors before loading. The file is read from the host
+only when selected; simulated file operations remain in memory. The app
+validates the file again, reports errors without replacing the active
+simulation, and opens `/home/student` when present or `/` otherwise.
 
 The command sends a fictional-scenario prompt and the current minimal Pydantic
 JSON schema to `http://127.0.0.1:11434/api/chat`. It prints the validated
@@ -89,4 +104,5 @@ the included file-operation check covers only this slice.
 The [sample scenario](scenario/sample.py) illustrates the supported structure:
 nonempty `title` and `description` strings and a nonempty `files` array. Each
 file has a unique, absolute normalized virtual `path` and a string `contents`.
-Unexpected fields and invalid paths are rejected before the state is replaced.
+Unexpected fields, invalid paths, and file/directory path conflicts are
+rejected before the state is replaced.
