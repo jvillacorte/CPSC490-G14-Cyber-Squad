@@ -13,7 +13,7 @@ From a clean clone, using Python 3.10–3.13:
 
 ```bash
 cd prototype
-python -m venv .venv
+python -m venv ../../cyber-sandbox-venv
 ```
 
 On Debian/Ubuntu, install the Qt runtime libraries before installing Python
@@ -23,9 +23,10 @@ dependencies:
 sudo apt-get install libegl1 libgl1
 ```
 
-Activate the environment with `source .venv/bin/activate` on macOS/Linux or
-`.venv\Scripts\activate` in Windows Command Prompt
-(`.venv/Scripts/Activate.ps1` in PowerShell), then run:
+The environment lives outside the repository so repository checks do not scan
+it. Activate it with `source ../../cyber-sandbox-venv/bin/activate` on
+macOS/Linux or `..\..\cyber-sandbox-venv\Scripts\activate` in Windows Command
+Prompt (`..\..\cyber-sandbox-venv\Scripts\Activate.ps1` in PowerShell), then run:
 
 ```bash
 python -m pip install -r requirements.txt

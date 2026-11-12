@@ -1,8 +1,15 @@
 import pytest
-import shiboken6
-from PySide6.QtWidgets import QApplication, QMessageBox
 
-from ui.window import MainWindow
+# Skip UI tests where Qt's system libraries (e.g. libEGL) are unavailable, such as CI.
+QtWidgets = pytest.importorskip(
+    "PySide6.QtWidgets", exc_type=ImportError, reason="Qt runtime libraries unavailable"
+)
+import shiboken6  # noqa: E402
+
+QApplication = QtWidgets.QApplication
+QMessageBox = QtWidgets.QMessageBox
+
+from ui.window import MainWindow  # noqa: E402
 
 
 def open_downloads(window):
