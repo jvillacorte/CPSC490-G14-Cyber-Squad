@@ -1,58 +1,31 @@
-# Design — Desktop Interface
+# Specification — Desktop Interface
 
-> Epic: #22 · Stories: #24
-> Owner: NguyenVGH · Sprint: 3 · Status: draft
-> Specification: [`/docs/design/desktop-interfface.md`](/docs/design/desktop-interfface.md)
+> Epic: #22 · Story: #24
+> Owner: NguyenVGH · Status: draft
+> Related specification: [training environment](training-environment.md)
 
+## Intended interface
 
-## 1. Interface Prototype
+The simulated desktop is to contain a file explorer, process manager, system
+log viewer, and network activity viewer. Users should be able to select each
+view and switch between them without closing or restarting the application.
+The views must represent simulated state, not the host computer's files,
+processes, logs, or network activity. Story #24 contains the acceptance
+criteria; the training-environment specification describes each capability.
 
-An attempt at creating an interface that contains a file explorer, process manager, system log viewer, and network activity viewer. 
+## Current prototype
 
-```
-import tkinter
-import tkinter.messagebox
+The maintained interface is implemented with PySide6 in
+[`prototype/ui/window.py`](../../prototype/ui/window.py), consistent with
+the [architecture](../design/architecture.md). An earlier Tkinter sketch was
+only a concept and is not the current implementation.
 
-class Interface:
-    def __init__(self):
-        self._main_interface = tkinter.Tk()
+The start screen starts the sample scenario or loads a selected JSON file.
+The scenario screen displays simulated files, supports directory navigation,
+file inspection, creation and confirmed deletion, and returns to the start
+screen. Starting or loading a scenario creates fresh in-memory state.
+See the [prototype README](../../prototype/README.md) for setup and limits.
 
-        self._main_interface.title('Cyber Sandbox')
-
-        self._label = tkinter.Label(self._main_interface, text='Welcome to the Cyber Sandbox!')
-        self._label.pack()
-
-        self._button1 = tkinter.Button(self._main_interface, text="File Explorer", command=self.call1)
-        self._button.pack()
-
-        self._button2 = tkinter.Button(self._main_interface, text="Process Manager", command=self.call2)
-        self._button.pack()
-
-        self._button3 = tkinter.Button(self._main_interface, text="System Log Viewer", command=self.call3)
-        self._button.pack()
-
-        self._button4 = tkinter.Button(self._main_interface, text="Network Activity Viewer", command=self.call4)
-        self._button.pack()
-
-        self._button5 = tkinter.Button(self._main_interface, text="Quit", command=self._main_interface.destroy)
-        self._button5_.pack()
-
-        tkinter._main_interface.mainloop()
-
-    def call1(self):
-        tkinter.messagebox.showinfo('File Explorer', 'Example Files')
-
-    def call2(self):
-        tkinter.messagebox.showinfo('Process Manager', 'Example Management Process')
-
-    def call3(self):
-        tkinter.messagebox.showinfo('System Log Viewer', 'Example Log')
-
-    def call4(self):
-        tkinter.messagebox.showinfo('Network Activity Viewer', 'Example Network Activity')
-
-```
-
-## 2. Prototype Design
-
-The interface design is a protoype and may change in future implementations. 
+The process manager, system log viewer, network activity viewer, and switching
+among those desktop components are not yet implemented. The current file view
+does not by itself satisfy all of story #24.
