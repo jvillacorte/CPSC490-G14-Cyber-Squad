@@ -38,7 +38,16 @@ def test_start_inspect_delete_and_restart(app, monkeypatch):
     assert window.file_list.count() == 2
 
     window.file_list.setCurrentRow(1)
-    assert "suspicious email" in window.details.toPlainText()
+    details = window.details.toPlainText()
+    assert "suspicious email" in details
+    for label in (
+        "Name: unexpected-update.txt",
+        "Size: ",
+        "SHA-256: ",
+        "Created: ",
+        "Modified: ",
+    ):
+        assert label in details
     monkeypatch.setattr(
         QMessageBox, "question", lambda *args: QMessageBox.StandardButton.Yes
     )

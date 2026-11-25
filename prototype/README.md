@@ -3,7 +3,8 @@
 This offline proof of concept opens a PySide6 start menu and validates either
 the predefined scenario or a selected JSON scenario with Pydantic. Start the
 scenario, select a simulated file
-to inspect its contents, navigate into virtual directories, create a simulated
+to inspect its contents and file information (name, path, size, SHA-256 and
+created and modified times), navigate into virtual directories, create a simulated
 text file, and confirm deletion to remove it from the in-memory state. Return
 to the start screen and start the sample again or reload a JSON file to restore
 that scenario. Simulated paths are data; these actions do not operate on host
@@ -98,7 +99,9 @@ The sample schema covers only a title, description, and text files. It is not
 the full scenario schema, and the GUI does not implement AI generation,
 malware behavior, deleting or creating directories, a process manager, network
 viewer, objective evaluation, or reports. Action history is held in memory
-only. Host isolation for future malware behaviors still needs its own tests;
+only. File timestamps use the computer's clock when a scenario loads or a file
+is created; scenarios cannot set their own times yet, and files cannot be edited,
+so the modified time always equals the created time. Host isolation for future malware behaviors still needs its own tests;
 the included file-operation check covers only this slice.
 
 The [sample scenario](scenario/sample.py) illustrates the supported structure:

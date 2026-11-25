@@ -19,6 +19,21 @@ from PySide6.QtWidgets import (
 from scenario.loader import load_scenario_file
 from scenario.sample import SAMPLE_SCENARIO
 from sim.controller import SimulationController
+from sim.engine import FileDetails
+
+
+def format_file_details(file: FileDetails) -> str:
+    """Metadata lines, a blank line, then the file's text contents."""
+    unit = "byte" if file.size_bytes == 1 else "bytes"
+    lines = [
+        f"Name: {file.name}",
+        f"Virtual path: {file.path}",
+        f"Size: {file.size_bytes} {unit}",
+        f"SHA-256: {file.sha256}",
+        f"Created: {file.created_at:%Y-%m-%d %H:%M:%S} UTC",
+        f"Modified: {file.modified_at:%Y-%m-%d %H:%M:%S} UTC",
+    ]
+    return "\n".join(lines) + "\n\n" + file.contents
 
 
 class MainWindow(QMainWindow):
@@ -182,7 +197,7 @@ class MainWindow(QMainWindow):
             self.delete_button.setEnabled(False)
             QMessageBox.warning(self, "Cannot inspect file", str(error))
             return
-        self.details.setPlainText(f"Virtual path: {file.path}\n\n{file.contents}")
+        self.details.setPlainText(format_file_details(file))
 
     def _delete_selected(self) -> None:
         item = self.file_list.currentItem()

@@ -1,10 +1,14 @@
 import builtins
+import hashlib
 import os
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
+from scenario.models import Scenario
 from scenario.sample import SAMPLE_SCENARIO
 from sim.controller import SimulationController
+from sim.engine import SimulationEngine
 
 
 def test_inspect_delete_and_reject_missing_file():
@@ -31,6 +35,30 @@ def test_inspect_delete_and_reject_missing_file():
         "FILE_INSPECT",
         "FILE_DELETE",
     ]
+
+
+def test_inspect_reports_file_information():
+    start = datetime(2026, 11, 25, 12, 0, tzinfo=timezone.utc)
+    ticks = iter(start + timedelta(minutes=minute) for minute in range(10))
+    engine = SimulationEngine(
+        Scenario.model_validate(SAMPLE_SCENARIO), clock=lambda: next(ticks)
+    )
+    path = "/home/student/Downloads/readme.txt"
+    contents = SAMPLE_SCENARIO["files"][0]["contents"]
+
+    details = engine.inspect_file(path)
+    assert details.path == path
+    assert details.name == "readme.txt"
+    assert details.contents == contents
+    assert details.size_bytes == len(contents.encode("utf-8"))
+    assert details.sha256 == hashlib.sha256(contents.encode("utf-8")).hexdigest()
+    assert details.created_at == details.modified_at == start
+
+    created = engine.create_file("/home/student/Downloads", "café.txt", "naïve")
+    new_details = engine.inspect_file(created)
+    assert new_details.size_bytes == len("naïve".encode("utf-8")) == 6
+    assert new_details.created_at == new_details.modified_at > start
+    assert new_details.sha256 != details.sha256
 
 
 def test_create_file_and_reject_invalid_names():
