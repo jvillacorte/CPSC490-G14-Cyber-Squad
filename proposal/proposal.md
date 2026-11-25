@@ -286,23 +286,40 @@ briefly what prototype v0 demonstrates today and how to run it.〉
 
 ## 6. Project Timeline
 
-> Identifies tasks (project objectives) to be performed, milestones to be
-> met, and the estimated number of hours for each task.
-
-〈**This is the plan for CPSC 491 next semester — the implementation timeline,
-not this semester's proposal work.** Identify the tasks (your objectives from
-§2), the milestones, and the estimated hours for each, in the order they will
-be built. State the assumptions it rests on (sponsor availability, data
-access, hardware).〉
+This is the implementation plan for CPSC 491 in spring, not this semester's proposal sprints. The objectives from §2 are built in five phases, ordered so that each phase builds on the one before it. Phase 1, Foundation, builds the foundation every other component depends on: the scenario schema, validation, loader, desktop shell, scenario controls and action log. Phase 2, Evidence views and live generation, adds the remaining evidence views and moves the riskiest dependency, live generation through NRP.ai, as early as the schema allows. Phase 3, Malware and response, adds malware behaviors with an isolation test for each, plus the response controls that act on them. Phase 4, AI feedback and variability, adds the AI feedback features that need a complete scenario and action log. Phase 5, the final week, is reserved for integration and the final demo.
 
 | Task (objective) | Milestone | Owner | Est. hours | Spring phase |
-|---|---|---|---|---|
-| 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
-| 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 | 〈…〉 |
+|-----------|----------------|--------|------|--------|
+| 2.2 Scenario schema ([[story:#34]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/34)) | Full schema covers files, processes, logs, network activity and objectives | jvillacorte | 12 | 1 (weeks 1–4) |
+| 2.4 Pydantic validation ([[story:#36]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/36)) | Valid scenarios load; invalid ones are rejected with a reason | jvillacorte | 20 | 1 (weeks 1–4) |
+| 2.5 Scenario loader ([[story:#37]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/37)) | A validated scenario populates every simulated component | danjobo | 20 | 1 (weeks 1–4) |
+| 1.1 Simulated desktop ([[story:#24]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/24)) | Desktop shell opens each component window | NguyenVGH | 20 | 1 (weeks 1–4) |
+| 1.2 Virtual file system ([[story:#25]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/25)) | File explorer reads the full schema and reflects later malware changes | alexgoodson-1991 | 20 | 1 (weeks 1–4) |
+| 1.9 Scenario controls ([[story:#32]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/32)) | Start, complete, restart and reset work end to end | NguyenVGH | 12 | 1 (weeks 1–4) |
+| 2.6 Action logging ([[story:#38]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/38)) | Every investigation and response action is recorded in order | NguyenVGH | 12 | 1 (weeks 1–4) |
+| 1.3 Process manager ([[story:#26]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/26)) | Inspect and terminate simulated processes | Jake-P-N | 12 | 2 (weeks 5–8) |
+| 1.4 System log viewer ([[story:#27]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/27)) | Timestamped events, including malware activity, are listed | Jake-P-N | 8 | 2 (weeks 5–8) |
+| 1.5 Network activity viewer ([[story:#28]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/28)) | Connections show addresses, ports and status | danjobo | 12 | 2 (weeks 5–8) |
+| 2.1 Scenario configuration ([[story:#33]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/33)) | Trainee selects malware type, difficulty and attack path | NguyenVGH | 12 | 2 (weeks 5–8) |
+| 2.3 NRP.ai LLM integration ([[story:#35]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/35)) | Live NRP.ai generation produces a scenario that passes validation | danjobo | 20 | 2 (weeks 5–8) |
+| 1.6 Simulated malware behaviors ([[story:#29]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/29)) | Two behaviors change simulated files, processes and network activity | danjobo | 20 | 3 (weeks 9–11) |
+| 1.7 Host-isolation tests ([[story:#30]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/30)) | A separate test per behavior shows no host change | alexgoodson-1991 | 20 | 3 (weeks 9–11) |
+| 1.8 Incident-response controls ([[story:#31]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/31)) | Identify, contain, remove and recover work on simulated threats | alexgoodson-1991 | 20 | 3 (weeks 9–11) |
+| 2.7 After-action report ([[story:#39]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/39)) | Report summarizes the attack, evaluates actions and suggests alternatives | NguyenVGH | 20 | 4 (weeks 12–14) |
+| 2.8 Optional hints ([[story:#40]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/40)) | Hints appear only on request and use scenario context | alexgoodson-1991 | 20 | 4 (weeks 12–14) |
+| 2.9 Scenario variability ([[story:#41]](https://github.com/jvillacorte/CPSC490-G14-Cyber-Squad/issues/41)) | Three scenarios from identical inputs and three from different inputs validate | jvillacorte | 20 | 4 (weeks 12–14) |
+| Integration, final demo and report | Stable build, verified README and final submission | Whole team | 40 | 5 (week 15) |
 
-〈Do **not** put this fall's four proposal sprints here — those live on the
-project board and in `docs/sprint-reviews/`. This section answers "how does
-the system actually get built next semester?"〉
+Totals: Phase 1 116 hours, Phase 2 64, Phase 3 60, Phase 4 60, and 40 for wrap-up, about 340 hours in all. By owner, before the shared wrap-up: alexgoodson-1991 80, NguyenVGH 76, danjobo 72, jvillacorte 52, Jake-P-N 20.
+
+The timeline rests on these assumptions:
+
+- **Schedule.** A 15-week spring semester. Calendar dates will be set once the CPSC 491 schedule is published; the phases give the order and relative length.
+- **Estimates.** Hours are estimated from each story's points at about 4 hours per point, including tests and review. The team will replace these with its measured velocity after the first spring sprint.
+- **Owners.** Owners are the current story assignees on the project board. The team is rebalancing workload, so owners may change; the order of work does not depend on who owns it.
+- **Sponsor and data.** The project is independent and needs no sponsor time or sponsor dataset. All scenario data is generated or written by the team and is fictional.
+- **AI service.** NRP.ai access, an account and an API key are available by Phase 2. If they are not, the team continues with the local Ollama spike so Phase 3 is not blocked, and live NRP.ai integration moves later.
+- **Hardware.** Development runs on team members' own laptops with Python and PySide6; no special hardware or production hosting is needed.
 
 ## 7. AI Usage
 
