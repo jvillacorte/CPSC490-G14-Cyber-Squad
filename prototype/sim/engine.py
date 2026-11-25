@@ -1,3 +1,5 @@
+import hashlib
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import PurePosixPath
@@ -13,6 +15,29 @@ class DirectoryEntry:
 
 
 @dataclass(frozen=True)
+class FileDetails:
+    """What the explorer shows when a simulated file is inspected."""
+
+    path: str
+    name: str
+    contents: str
+    size_bytes: int
+    sha256: str
+    created_at: datetime
+    modified_at: datetime
+
+
+@dataclass(frozen=True)
+class _Timestamps:
+    created_at: datetime
+    modified_at: datetime
+
+
+def _utc_now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+@dataclass(frozen=True)
 class Action:
     action_type: str
     path: str
@@ -20,8 +45,15 @@ class Action:
 
 
 class SimulationEngine:
-    def __init__(self, scenario: Scenario):
+    def __init__(
+        self, scenario: Scenario, clock: Callable[[], datetime] = _utc_now
+    ):
+        self._clock = clock
         self._files = {file.path: file for file in scenario.files}
+        loaded_at = clock()
+        self._timestamps = {
+            path: _Timestamps(loaded_at, loaded_at) for path in self._files
+        }
         self._directories = {"/"}
         for path in self._files:
             parent = PurePosixPath(path).parent
@@ -63,10 +95,21 @@ class SimulationEngine:
             )
         )
 
-    def inspect_file(self, path: str) -> SimulatedFile:
+    def inspect_file(self, path: str) -> FileDetails:
         file = self._get_file(path)
+        encoded = file.contents.encode("utf-8")
+        times = self._timestamps[path]
+        details = FileDetails(
+            path=file.path,
+            name=PurePosixPath(file.path).name,
+            contents=file.contents,
+            size_bytes=len(encoded),
+            sha256=hashlib.sha256(encoded).hexdigest(),
+            created_at=times.created_at,
+            modified_at=times.modified_at,
+        )
         self._record("FILE_INSPECT", path)
-        return file
+        return details
 
     def create_file(self, directory: str, name: str, contents: str = "") -> str:
         parent = self._normalize_directory(directory)
@@ -83,12 +126,15 @@ class SimulationEngine:
         if path in self._files or path in self._directories:
             raise ValueError("A simulated entry with that name already exists")
         self._files[path] = SimulatedFile(path=path, contents=contents)
+        created_at = self._clock()
+        self._timestamps[path] = _Timestamps(created_at, created_at)
         self._record("FILE_CREATE", path)
         return path
 
     def delete_file(self, path: str) -> None:
         self._get_file(path)
         del self._files[path]
+        del self._timestamps[path]
         self._record("FILE_DELETE", path)
 
     def _get_file(self, path: str) -> SimulatedFile:
@@ -98,7 +144,7 @@ class SimulationEngine:
             raise ValueError("The simulated file no longer exists") from None
 
     def _record(self, action_type: str, path: str) -> None:
-        self._actions.append(Action(action_type, path, datetime.now(timezone.utc)))
+        self._actions.append(Action(action_type, path, self._clock()))
 
     @staticmethod
     def _normalize_directory(path: str) -> str:

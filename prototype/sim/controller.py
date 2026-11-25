@@ -1,5 +1,5 @@
-from scenario.models import Scenario, SimulatedFile
-from sim.engine import DirectoryEntry, SimulationEngine
+from scenario.models import Scenario
+from sim.engine import DirectoryEntry, FileDetails, SimulationEngine
 
 
 class SimulationController:
@@ -23,7 +23,7 @@ class SimulationController:
     def create_file(self, directory: str, name: str, contents: str = "") -> str:
         return self._active_engine().create_file(directory, name, contents)
 
-    def inspect_file(self, path: str) -> SimulatedFile:
+    def inspect_file(self, path: str) -> FileDetails:
         return self._active_engine().inspect_file(path)
 
     def delete_file(self, path: str) -> None:
